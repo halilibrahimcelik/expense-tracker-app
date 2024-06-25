@@ -1,6 +1,5 @@
-# React Native TypeScript Template
+# Expense Tracker
 
-Welcome to the React Native TypeScript Template! This repository serves as a starting point for building React Native applications using TypeScript. It's designed to help you kickstart your project with a solid foundation, making your development process smoother and more efficient.
 
 ## 🚀 Quick Start
 
