@@ -6,7 +6,6 @@ import AllExpenses from '@/screens/AllExpenses';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import LastExpenses from '@/screens/LastExpenses';
 import { RootStackParamList, STACK_NAMES } from '@/types';
-import type { ParamListBase } from '@react-navigation/native';
 
 interface Props {}
 const Tab = createBottomTabNavigator<RootStackParamList>();
@@ -61,7 +60,7 @@ const TabNavigator = (props: Props) => {
                 : options.title !== undefined
                 ? options.title
                 : //@ts-ignore
-                  route.title;
+                  route.params.title;
 
             return label;
           }}
@@ -75,7 +74,7 @@ const TabNavigator = (props: Props) => {
         options={{
           tabBarLabel: 'Last Expenses',
           tabBarIcon: ({ color, size }) => {
-            return <Icon name='cog' size={size} color={color} />;
+            return <Icon name='timer-sand' size={size} color={color} />;
           },
         }}
       />
@@ -85,8 +84,9 @@ const TabNavigator = (props: Props) => {
         component={AllExpenses}
         options={{
           tabBarLabel: 'All Expenses',
+
           tabBarIcon: ({ color, size }) => {
-            return <Icon name='home' size={size} color={color} />;
+            return <Icon name='chart-timeline' size={size} color={color} />;
           },
         }}
       />

@@ -6,7 +6,7 @@ import { RootStackParamList, STACK_NAMES } from '@/types';
 interface Props
   extends BottomTabScreenProps<RootStackParamList, STACK_NAMES.AllExpenses> {}
 
-const AllExpenses = (props: Props) => {
+const AllExpenses = ({ navigation, route }: Props) => {
   return (
     <View>
       <Text>AllExpenses</Text>
