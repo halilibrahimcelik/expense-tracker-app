@@ -7,13 +7,12 @@ export enum STACK_NAMES {
 export type ISlug = {
   slug: string;
 };
+export interface ITitle {
+  title: string;
+}
 
 export type RootStackParamList = {
-  [STACK_NAMES.AllExpenses]: {
-    title: STACK_NAMES.AllExpenses;
-  };
-  [STACK_NAMES.LastExpenses]: {
-    title: STACK_NAMES.LastExpenses;
-  };
+  [STACK_NAMES.AllExpenses]: ITitle;
+  [STACK_NAMES.LastExpenses]: ITitle;
   [STACK_NAMES.ManageExpenses]: ISlug;
 };

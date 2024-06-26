@@ -1,7 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
+import { RootStackParamList, STACK_NAMES } from '@/types';
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 
-type Props = {};
+interface Props
+  extends BottomTabScreenProps<RootStackParamList, STACK_NAMES.LastExpenses> {}
 
 const LastExpenses = (props: Props) => {
   return (

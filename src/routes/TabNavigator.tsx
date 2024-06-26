@@ -6,9 +6,9 @@ import AllExpenses from '@/screens/AllExpenses';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import LastExpenses from '@/screens/LastExpenses';
 import { RootStackParamList, STACK_NAMES } from '@/types';
+import type { ParamListBase } from '@react-navigation/native';
 
-type Props = {};
-
+interface Props {}
 const Tab = createBottomTabNavigator<RootStackParamList>();
 const TabNavigator = (props: Props) => {
   return (
@@ -60,7 +60,8 @@ const TabNavigator = (props: Props) => {
                 ? options.tabBarLabel
                 : options.title !== undefined
                 ? options.title
-                : route.title;
+                : //@ts-ignore
+                  route.title;
 
             return label;
           }}
@@ -68,6 +69,7 @@ const TabNavigator = (props: Props) => {
       )}
     >
       <Tab.Screen
+        initialParams={{ title: 'Last Expenses' }}
         name={STACK_NAMES.LastExpenses}
         component={LastExpenses}
         options={{
@@ -78,6 +80,7 @@ const TabNavigator = (props: Props) => {
         }}
       />
       <Tab.Screen
+        initialParams={{ title: 'All Expenses' }}
         name={STACK_NAMES.AllExpenses}
         component={AllExpenses}
         options={{
