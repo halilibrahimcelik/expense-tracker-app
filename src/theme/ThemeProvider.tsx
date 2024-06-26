@@ -1,4 +1,4 @@
-import { createContext, useMemo, useState } from 'react';
+import { createContext, useContext, useMemo, useState } from 'react';
 import {
   MD2DarkTheme,
   MD2LightTheme,
@@ -9,11 +9,18 @@ import {
   useTheme,
 } from 'react-native-paper';
 interface InitialState {
+  isDarkMode: boolean;
   toggleTheme: () => void;
   theme: MD2Theme | MD3Theme;
 }
 
 export const ThemeContext = createContext<InitialState | null>(null);
+export const useThemeContext = () => {
+  if (!ThemeContext) {
+    throw new Error('useThemeContext must be used within a ThemeProvider');
+  }
+  return useContext(ThemeContext);
+};
 export const useExampleTheme = () => useTheme<MD2Theme | MD3Theme>();
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
@@ -29,6 +36,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   }, [isDarkMode, themeVersion]);
   const value = useMemo(
     () => ({
+      isDarkMode,
       toggleTheme: () => setIsDarkMode((oldValue) => !oldValue),
       theme,
     }),

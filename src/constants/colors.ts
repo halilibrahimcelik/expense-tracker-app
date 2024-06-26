@@ -1,6 +1,6 @@
 import { ThemeProp } from 'react-native-paper/lib/typescript/types';
 
-export const LightTheme = {
+export const PinkLightTheme = {
   colors: {
     primary: 'rgb(154, 64, 87)',
     onPrimary: 'rgb(255, 255, 255)',
@@ -45,7 +45,7 @@ export const LightTheme = {
   },
 };
 
-export const DarkTheme = {
+export const PinkDarkTheme = {
   colors: {
     primary: 'rgb(255, 177, 192)',
     onPrimary: 'rgb(95, 17, 42)',
