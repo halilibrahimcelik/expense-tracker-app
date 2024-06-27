@@ -8,6 +8,7 @@ import LastExpenses from '@/screens/LastExpenses';
 import { RootStackParamList, STACK_NAMES } from '@/types';
 import { useThemeContext } from '@/theme/ThemeProvider';
 import { theme } from '@/theme';
+import DarkModeToggle from '@/components/UI/Switch';
 
 interface Props {}
 const Tab = createBottomTabNavigator<RootStackParamList>();
@@ -22,6 +23,9 @@ const TabNavigator = (props: Props) => {
       <Tab.Navigator
         screenOptions={{
           headerShown: true,
+          headerRight(props) {
+            return <DarkModeToggle />;
+          },
           headerTitleAlign: 'left',
           headerTitle(props) {
             return (

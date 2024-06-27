@@ -10,8 +10,7 @@ interface Props
 const AllExpenses = ({ navigation, route }: Props) => {
   return (
     <View>
-      <Text>AllExpenses</Text>
-      <DarkModeToggle />
+      <Text className='text-xl'>AllExpenses</Text>
     </View>
   );
 };

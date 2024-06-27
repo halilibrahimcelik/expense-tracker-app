@@ -1,6 +1,6 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import React from 'react';
-import { Switch } from 'react-native-paper';
+import { Switch, Text } from 'react-native-paper';
 import { useThemeContext } from '@/theme/ThemeProvider';
 
 type Props = {};
@@ -8,11 +8,14 @@ type Props = {};
 const DarkModeToggle = (props: Props) => {
   const themeContext = useThemeContext();
   return (
-    <View>
-      <Switch
-        value={themeContext?.isDarkMode}
-        onValueChange={themeContext?.toggleTheme}
-      />
+    <View className='flex flex-row gap-2 items-center'>
+      <Text variant='labelSmall'>Dark Mode</Text>
+      <View>
+        <Switch
+          value={themeContext?.isDarkMode}
+          onValueChange={themeContext?.toggleTheme}
+        />
+      </View>
     </View>
   );
 };
