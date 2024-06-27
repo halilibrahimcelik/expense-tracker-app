@@ -1,30 +1,54 @@
-import { BottomNavigation, Text } from 'react-native-paper';
+import {
+  BottomNavigation,
+  IconButton,
+  Text,
+  useTheme,
+} from 'react-native-paper';
 import { CommonActions, NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { StyleSheet, useColorScheme } from 'react-native';
+import { StyleSheet, View, useColorScheme } from 'react-native';
 import AllExpenses from '@/screens/AllExpenses';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import LastExpenses from '@/screens/LastExpenses';
 import { RootStackParamList, STACK_NAMES } from '@/types';
 import { useThemeContext } from '@/theme/ThemeProvider';
-import { theme } from '@/theme';
-import DarkModeToggle from '@/components/UI/Switch';
-
+import DarkModeToggle from '@/components/UI/DarkModeToggle';
+import { MaterialIcons } from '@expo/vector-icons';
+import { theme as defaultTheme } from '@/theme';
 interface Props {}
 const Tab = createBottomTabNavigator<RootStackParamList>();
 const TabNavigator = (props: Props) => {
   const themeContext = useThemeContext();
+  const theme = useTheme();
   const systemColorScheme = useColorScheme() || 'light';
   const colorScheme = themeContext?.isDarkMode ? 'dark' : systemColorScheme;
 
   return (
     // @ts-ignore
-    <NavigationContainer theme={theme[colorScheme]}>
+    <NavigationContainer theme={defaultTheme[colorScheme]}>
       <Tab.Navigator
         screenOptions={{
           headerShown: true,
           headerRight(props) {
-            return <DarkModeToggle />;
+            return (
+              <View className='flex flex-row gap-4 justify-center items-end'>
+                <DarkModeToggle />
+                <View>
+                  <IconButton
+                    size={24}
+                    icon={() => (
+                      <MaterialIcons
+                        name={'post-add'}
+                        size={24}
+                        color={theme.colors.primary}
+                      />
+                    )}
+                    className='min-w-max max-w-[40px]'
+                    mode='contained-tonal'
+                  />
+                </View>
+              </View>
+            );
           },
           headerTitleAlign: 'left',
           headerTitle(props) {
