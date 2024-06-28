@@ -4,6 +4,7 @@ import TotalCount from './TotalCount';
 import { Checkbox, Text, useTheme } from 'react-native-paper';
 import { FontAwesome } from '@expo/vector-icons';
 import { useMainExpenseContext } from '@/providers/MainExpenseProvider';
+import SingleExpense from '../singleExpense';
 type Props = {};
 
 const LastExpensesWrapper = (props: Props) => {
@@ -13,7 +14,7 @@ const LastExpensesWrapper = (props: Props) => {
     <View>
       <View className='flex-row items-center  mb-5 w-full gap-0'>
         <Text variant='bodyLarge'>Choose a currency: </Text>
-        <View className='flex-row flex-1 justify-between items-center  gap-x-3 '>
+        <View className='flex-row flex-1 justify-between items-center  gap-x-2 '>
           <View className='flex-row items-center gap-0 '>
             <FontAwesome name='dollar' size={24} color={theme.colors.primary} />
             <View className='items-center p-0 flex h-full '>
@@ -65,6 +66,7 @@ const LastExpensesWrapper = (props: Props) => {
         </View>
       </View>
       <TotalCount />
+      <SingleExpense />
     </View>
   );
 };

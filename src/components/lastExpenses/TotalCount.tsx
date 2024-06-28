@@ -6,7 +6,7 @@ type Props = {};
 
 const TotalCount = (props: Props) => {
   return (
-    <Card mode='contained' className='flex-row justify-between p-1 '>
+    <Card mode='contained' className='flex-row justify-between p-2  w-full'>
       <Text variant='bodyMedium'>Total Expense:</Text>
     </Card>
   );
