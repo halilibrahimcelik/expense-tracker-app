@@ -18,7 +18,7 @@ export const theme: { light: ThemeProp; dark: ThemeProp } = {
   light: {
     ...MD3LightTheme,
     ...LightTheme,
-    roundness: 4,
+    roundness: 1,
     dark: false,
     colors: {
       ...MD3LightTheme.colors,
@@ -29,6 +29,7 @@ export const theme: { light: ThemeProp; dark: ThemeProp } = {
     ...MD3DarkTheme,
     ...DarkTheme,
     dark: true,
+    roundness: 1,
     colors: {
       ...MD3DarkTheme.colors,
       ...PinkDarkTheme.colors,
