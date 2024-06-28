@@ -3,25 +3,18 @@ import React, { useState } from 'react';
 import TotalCount from './TotalCount';
 import { Checkbox, Text, useTheme } from 'react-native-paper';
 import { FontAwesome } from '@expo/vector-icons';
+import { useMainExpenseContext } from '@/providers/MainExpenseProvider';
 type Props = {};
-type Currency = {
-  dollar: boolean;
-  euro: boolean;
-  lira: boolean;
-};
+
 const LastExpensesWrapper = (props: Props) => {
-  const [currency, setCurrency] = useState<Currency>({
-    dollar: true,
-    euro: false,
-    lira: false,
-  });
+  const { currency, setCurrency } = useMainExpenseContext();
   const theme = useTheme();
   return (
     <View>
-      <View className='flex-row items-center  w-full gap-0'>
+      <View className='flex-row items-center  mb-5 w-full gap-0'>
         <Text variant='bodyLarge'>Choose a currency: </Text>
-        <View className='flex-row justify-center items-center  gap-x-3 '>
-          <View className='flex-row items-center gap-0 border border-white'>
+        <View className='flex-row flex-1 justify-between items-center  gap-x-3 '>
+          <View className='flex-row items-center gap-0 '>
             <FontAwesome name='dollar' size={24} color={theme.colors.primary} />
             <View className='items-center p-0 flex h-full '>
               <Checkbox.Android
