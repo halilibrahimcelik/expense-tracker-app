@@ -1,6 +1,6 @@
 export enum STACK_NAMES {
-  AllExpenses = 'AllExpenses',
-  LastExpenses = 'LastExpenses',
+  AllExpenses = 'All Expenses',
+  LastExpenses = 'Last Expenses',
   ManageExpenses = 'ManageExpenses',
 }
 

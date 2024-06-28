@@ -1,9 +1,4 @@
-import {
-  BottomNavigation,
-  IconButton,
-  Text,
-  useTheme,
-} from 'react-native-paper';
+import { BottomNavigation, IconButton, useTheme } from 'react-native-paper';
 import { CommonActions, NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { StyleSheet, View, useColorScheme } from 'react-native';
@@ -15,6 +10,7 @@ import { useThemeContext } from '@/theme/ThemeProvider';
 import DarkModeToggle from '@/components/UI/DarkModeToggle';
 import { MaterialIcons } from '@expo/vector-icons';
 import { theme as defaultTheme } from '@/theme';
+import { StatusBar } from 'expo-status-bar';
 interface Props {}
 const Tab = createBottomTabNavigator<RootStackParamList>();
 const TabNavigator = (props: Props) => {
@@ -29,6 +25,16 @@ const TabNavigator = (props: Props) => {
       <Tab.Navigator
         screenOptions={{
           headerShown: true,
+          headerTintColor: theme.colors.primary,
+          headerTitleStyle: {
+            fontSize: 20,
+          },
+          headerBackgroundContainerStyle: {
+            justifyContent: 'center',
+            height: 100,
+            alignContent: 'center',
+            backgroundColor: theme.colors.inverseOnSurface,
+          },
           headerRight(props) {
             return (
               <View className='flex flex-row gap-4 justify-center items-end'>
@@ -51,16 +57,10 @@ const TabNavigator = (props: Props) => {
             );
           },
           headerTitleAlign: 'left',
-          headerTitle(props) {
-            return (
-              <Text style={{}} variant='titleLarge'>
-                {props.children}
-              </Text>
-            );
-          },
         }}
         tabBar={({ navigation, state, descriptors, insets }) => (
           <BottomNavigation.Bar
+            activeColor={theme.colors.primary}
             navigationState={state}
             safeAreaInsets={insets}
             onTabPress={({ route, preventDefault }) => {
@@ -108,6 +108,10 @@ const TabNavigator = (props: Props) => {
           component={LastExpenses}
           options={{
             tabBarLabel: 'Last Expenses',
+            tabBarLabelStyle: {
+              color: theme.colors.primary,
+            },
+
             tabBarIcon: ({ color, size }) => {
               return <Icon name='timer-sand' size={size} color={color} />;
             },
@@ -126,6 +130,7 @@ const TabNavigator = (props: Props) => {
           }}
         />
       </Tab.Navigator>
+      <StatusBar style={themeContext?.isDarkMode ? 'light' : 'dark'} />
     </NavigationContainer>
   );
 };
