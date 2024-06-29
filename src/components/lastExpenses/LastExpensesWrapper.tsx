@@ -66,7 +66,7 @@ const LastExpensesWrapper = (props: Props) => {
         </View>
       </View>
       <TotalCount />
-      <SingleExpense />
+      {/* <SingleExpense /> */}
     </View>
   );
 };

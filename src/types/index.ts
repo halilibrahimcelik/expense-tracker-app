@@ -1,7 +1,9 @@
+import { NavigationProp } from '@react-navigation/native';
+
 export enum STACK_NAMES {
   AllExpenses = 'All Expenses',
   LastExpenses = 'Last Expenses',
-  ManageExpenses = 'ManageExpenses',
+  ManageExpenses = 'Manage Expenses',
 }
 
 export type ISlug = {
@@ -17,8 +19,12 @@ export interface IExpense {
   cost: number;
   expenseDate: Date;
 }
-export type RootStackParamList = {
+export type RootBottomParamList = {
+  [STACK_NAMES.LastExpenses]: ITitle;
   [STACK_NAMES.AllExpenses]: ITitle;
+};
+export type RootStackParamList = {
   [STACK_NAMES.LastExpenses]: ITitle;
   [STACK_NAMES.ManageExpenses]: ISlug;
 };
+export type StackNavigation = NavigationProp<RootStackParamList>;
