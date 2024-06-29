@@ -1,6 +1,7 @@
-import { Platform, StyleSheet, View } from 'react-native';
-import React, { useState } from 'react';
+import { Alert, Platform, StyleSheet, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { Button, Text, TextInput, useTheme } from 'react-native-paper';
+import { validateCost, validateDescription, validateTitle } from '@/utils';
 
 type Props = {
   handleNavigation: () => void;
@@ -10,25 +11,7 @@ type ErrorState = {
   errorMessage: string;
 };
 const numberOfLines = 4;
-const validateTitle = (title: string) => {
-  const value = title?.trim();
-  if (!value) {
-    return {
-      isError: true,
-      errorMessage: 'Title is required',
-    };
-  }
-  if (value.length < 3) {
-    return {
-      isError: true,
-      errorMessage: 'Title must be atleast 3 characters long',
-    };
-  }
-  return {
-    isError: false,
-    errorMessage: '',
-  };
-};
+
 const ExpenseForm = ({ handleNavigation }: Props) => {
   const theme = useTheme();
   const [title, setTitle] = useState('');
@@ -53,6 +36,27 @@ const ExpenseForm = ({ handleNavigation }: Props) => {
     },
   });
 
+  const onSubmit = () => {
+    const titleError = validateTitle(title);
+    const descriptionError = validateDescription(description);
+    const costError = validateCost(cost);
+    setErrorState({
+      title: titleError,
+      description: descriptionError,
+      cost: costError,
+    });
+    if (titleError.isError || descriptionError.isError || costError.isError) {
+      //Alert.alert('Error', 'Please fill all the fields');
+    }
+  };
+  useEffect(() => {
+    if (title?.trim().length > 0) {
+      setErrorState((prevState) => {
+        return { ...prevState, title: { isError: false, errorMessage: '' } };
+      });
+    }
+  }, [title]);
+
   return (
     <View>
       <View className='gap-3'>
@@ -74,6 +78,16 @@ const ExpenseForm = ({ handleNavigation }: Props) => {
           value={title}
           onChangeText={(text) => setTitle(text)}
         />
+        {errorState.title.isError && (
+          <Text
+            style={{
+              color: theme.colors.error,
+            }}
+            variant='labelSmall'
+          >
+            {errorState.title.errorMessage}
+          </Text>
+        )}
         <TextInput
           multiline
           returnKeyType={'done'}
@@ -118,7 +132,7 @@ const ExpenseForm = ({ handleNavigation }: Props) => {
         <Button mode='contained-tonal' onPress={handleNavigation}>
           <Text variant='titleSmall'>Cancel</Text>
         </Button>
-        <Button mode='contained-tonal' onPress={() => {}}>
+        <Button mode='contained-tonal' onPress={onSubmit}>
           <Text variant='titleSmall'> Submit</Text>
         </Button>
       </View>

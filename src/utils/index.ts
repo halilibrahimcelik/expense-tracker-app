@@ -4,3 +4,56 @@ export function formatDate(date: Date): string {
   const year = date.getFullYear();
   return `${month}/${day}/${year}`;
 }
+
+export const validateTitle = (title: string) => {
+  const value = title?.trim();
+  if (!value) {
+    return {
+      isError: true,
+      errorMessage: 'Title is required',
+    };
+  }
+  if (value.length < 3) {
+    return {
+      isError: true,
+      errorMessage: 'Title must be atleast 3 characters long',
+    };
+  }
+  return {
+    isError: false,
+    errorMessage: '',
+  };
+};
+export const validateDescription = (description: string) => {
+  const value = description?.trim();
+  if (!value) {
+    return {
+      isError: true,
+      errorMessage: 'Description is required',
+    };
+  }
+  if (value.length < 5) {
+    return {
+      isError: true,
+      errorMessage: 'Description must be atleast 5 characters long',
+    };
+  }
+  return {
+    isError: false,
+    errorMessage: '',
+  };
+};
+export const validateCost = (cost: string) => {
+  const value = cost?.trim();
+  if (!value) {
+    return {
+      isError: true,
+      errorMessage: 'Cost is required',
+    };
+  }
+
+  return {
+    isError: false,
+    errorMessage: '',
+  };
+};
