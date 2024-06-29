@@ -23,7 +23,7 @@ export default function App() {
                   }}
                 >
                   <Stack.Screen
-                    name={STACK_NAMES.LastExpenses}
+                    name={STACK_NAMES.Home}
                     component={TabNavigator}
                   />
                   <Stack.Screen

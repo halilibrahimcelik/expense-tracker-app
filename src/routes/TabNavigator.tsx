@@ -18,25 +18,17 @@ import {
 import { useThemeContext } from '@/theme/ThemeProvider';
 import DarkModeToggle from '@/components/UI/DarkModeToggle';
 import { MaterialIcons } from '@expo/vector-icons';
-import { theme as defaultTheme } from '@/theme';
 import { StatusBar } from 'expo-status-bar';
-import ExpenseModal from '@/components/UI/ExpenseModal';
-import { useState } from 'react';
+import { nanoid } from 'nanoid';
 interface Props {}
 const Tab = createBottomTabNavigator<RootBottomParamList>();
 
 const TabNavigator = (props: Props) => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const hideModal = () => setIsModalVisible(false);
-  const showModal = () => setIsModalVisible(true);
   const themeContext = useThemeContext();
   const theme = useTheme();
   const navigation = useNavigation<StackNavigation>();
-  const systemColorScheme = useColorScheme() || 'light';
-  const colorScheme = themeContext?.isDarkMode ? 'dark' : systemColorScheme;
 
   return (
-    // @ts-ignore
     <>
       <Tab.Navigator
         screenOptions={{
@@ -60,7 +52,7 @@ const TabNavigator = (props: Props) => {
                     size={24}
                     onPress={() =>
                       navigation.navigate(STACK_NAMES.ManageExpenses, {
-                        slug: '',
+                        slug: nanoid(),
                       })
                     }
                     icon={() => (
