@@ -1,5 +1,5 @@
 import { createContext, useContext, useMemo, useState } from 'react';
-type Currency = {
+export type Currency = {
   dollar: boolean;
   euro: boolean;
   lira: boolean;
