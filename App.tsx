@@ -1,19 +1,21 @@
+import MainExpenseProvider from '@/providers/MainExpenseProvider';
 import ThemePaperProvider from '@/providers/ThemePaperProvider';
 import TabNavigator from '@/routes/TabNavigator';
-import { theme } from '@/theme';
 import { ThemeProvider } from '@/theme/ThemeProvider';
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
+import 'react-native-get-random-values';
 
 export default function App() {
   return (
     <>
       <ThemeProvider>
-        <ThemePaperProvider>
-          <View style={styles.container}>
-            <TabNavigator />
-          </View>
-        </ThemePaperProvider>
+        <MainExpenseProvider>
+          <ThemePaperProvider>
+            <View style={styles.container}>
+              <TabNavigator />
+            </View>
+          </ThemePaperProvider>
+        </MainExpenseProvider>
       </ThemeProvider>
     </>
   );

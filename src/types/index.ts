@@ -10,7 +10,13 @@ export type ISlug = {
 export interface ITitle {
   title: string;
 }
-
+export interface IExpense {
+  id: string;
+  title: string;
+  description: string;
+  cost: number;
+  expenseDate: Date;
+}
 export type RootStackParamList = {
   [STACK_NAMES.AllExpenses]: ITitle;
   [STACK_NAMES.LastExpenses]: ITitle;
