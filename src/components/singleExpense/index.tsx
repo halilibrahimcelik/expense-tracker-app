@@ -10,9 +10,16 @@ import {
   Currency,
   useMainExpenseContext,
 } from '@/providers/MainExpenseProvider';
-type Props = {};
+import { IExpense } from '@/types';
+
 type AndroidMode = 'date' | 'time' | 'datetime' | 'countdown';
-const SingleExpense = (props: Props) => {
+const SingleExpense = ({
+  cost,
+  id,
+  description,
+  expenseDate,
+  title,
+}: IExpense) => {
   const { currency } = useMainExpenseContext();
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState<AndroidMode>('date');
@@ -52,12 +59,10 @@ const SingleExpense = (props: Props) => {
       <View className='flex-row  justify-between'>
         <View className='flex-shrink '>
           <Text className='mb-2' variant='titleSmall'>
-            Road Trip to Capodox{' '}
+            {title}
           </Text>
           <Text className='flex-shrink-0' variant='bodySmall'>
-            Description Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet
-            consectetur adipisicing elit. Dolor, exercitationem!, Description
-            Lorem ipsum dolor sit amet.
+            {description}
           </Text>
           <View className='flex-row mt-4 h-5 items-center  '>
             <IconButton
@@ -85,7 +90,8 @@ const SingleExpense = (props: Props) => {
             Cost{' '}
           </Text>
           <Text variant='headlineMedium'>
-            {returnCurrencySymbol(currency)}323{' '}
+            {returnCurrencySymbol(currency)}
+            {cost}
           </Text>
         </View>
       </View>

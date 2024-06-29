@@ -3,6 +3,7 @@ import ThemePaperProvider from '@/providers/ThemePaperProvider';
 import TabNavigator from '@/routes/TabNavigator';
 import { ThemeProvider } from '@/theme/ThemeProvider';
 import { StyleSheet, View } from 'react-native';
+import 'react-native-get-random-values';
 
 export default function App() {
   return (

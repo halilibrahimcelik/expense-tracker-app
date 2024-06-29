@@ -1,3 +1,4 @@
+import { IExpense } from '@/types';
 import { createContext, useContext, useMemo, useState } from 'react';
 export type Currency = {
   dollar: boolean;
@@ -25,6 +26,8 @@ const MainExpenseProvider = ({ children }: { children: React.ReactNode }) => {
     euro: false,
     lira: false,
   });
+  const [allExpenses, setAllExpenseses] = useState<IExpense[]>([]);
+
   const value = useMemo(() => {
     return {
       currency,
