@@ -7,6 +7,7 @@ export enum STACK_NAMES {
   LastExpenses = 'Last Expenses',
   ManageExpenses = 'Manage Expenses',
 }
+export type ITimeMode = 'date' | 'time' | 'datetime' | 'countdown';
 
 export type ISlug = {
   slug: string;

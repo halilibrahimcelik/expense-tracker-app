@@ -7,9 +7,8 @@ import DateTimePicker, {
 import { AntDesign } from '@expo/vector-icons';
 import { formatDate } from '@/utils';
 import { Currency, useMainExpenseCtx } from '@/providers/MainExpenseProvider';
-import { IExpense } from '@/types';
+import { IExpense, ITimeMode } from '@/types';
 
-type AndroidMode = 'date' | 'time' | 'datetime' | 'countdown';
 const SingleExpense = ({
   cost,
   id,
@@ -19,7 +18,7 @@ const SingleExpense = ({
 }: IExpense) => {
   const { currency } = useMainExpenseCtx();
   const [date, setDate] = useState(new Date());
-  const [mode, setMode] = useState<AndroidMode>('date');
+  const [mode, setMode] = useState<ITimeMode>('date');
   const [show, setShow] = useState(false);
   const theme = useTheme();
   const onChange = (
@@ -31,7 +30,7 @@ const SingleExpense = ({
     currentDate && setDate(currentDate);
   };
 
-  const showMode = (currentMode: AndroidMode) => {
+  const showMode = (currentMode: ITimeMode) => {
     setShow(true);
     setMode(currentMode);
   };

@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import React, { useState } from 'react';
 import TotalCount from './TotalCount';
 import { Checkbox, Text, useTheme } from 'react-native-paper';
@@ -8,7 +8,7 @@ import SingleExpense from '../singleExpense';
 type Props = {};
 
 const LastExpensesWrapper = (props: Props) => {
-  const { currency, setCurrency } = useMainExpenseCtx();
+  const { currency, setCurrency, allExpenses } = useMainExpenseCtx();
   const theme = useTheme();
   return (
     <View>
@@ -66,7 +66,11 @@ const LastExpensesWrapper = (props: Props) => {
         </View>
       </View>
       <TotalCount />
-      {/* <SingleExpense /> */}
+      <FlatList
+        data={allExpenses}
+        renderItem={({ item }) => <SingleExpense {...item} />}
+        keyExtractor={(item) => item.id}
+      />
     </View>
   );
 };

@@ -57,3 +57,15 @@ export const validateCost = (cost: string) => {
     errorMessage: '',
   };
 };
+export const validateExpenseDate = (date: Date | undefined) => {
+  if (!date) {
+    return {
+      isError: true,
+      errorMessage: 'Date is required',
+    };
+  }
+  return {
+    isError: false,
+    errorMessage: '',
+  };
+};
