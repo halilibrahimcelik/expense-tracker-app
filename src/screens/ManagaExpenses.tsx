@@ -3,6 +3,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Pressable,
+  ScrollView,
   StyleSheet,
   TouchableWithoutFeedback,
   View,
@@ -24,18 +25,20 @@ const ManagaExpenses = ({ navigation, route }: Props) => {
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <SafeAreaView>
         <KeyboardAvoidingView
-          style={{ overflow: 'hidden' }}
-          behavior='position'
+          behavior={Platform.OS === 'ios' ? 'position' : 'height'}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 10}
         >
           <SafeAreaView>
-            <TouchableWithoutFeedback
-              onPress={Keyboard.dismiss}
-              accessible={false}
-            >
-              <Container>
-                <ExpenseForm handleNavigation={handleNavigation} />
-              </Container>
-            </TouchableWithoutFeedback>
+            <ScrollView>
+              <TouchableWithoutFeedback
+                onPress={Keyboard.dismiss}
+                accessible={false}
+              >
+                <Container>
+                  <ExpenseForm handleNavigation={handleNavigation} />
+                </Container>
+              </TouchableWithoutFeedback>
+            </ScrollView>
           </SafeAreaView>
         </KeyboardAvoidingView>
       </SafeAreaView>

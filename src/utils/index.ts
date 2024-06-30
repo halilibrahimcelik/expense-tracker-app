@@ -7,16 +7,16 @@ export function formatDate(date: Date): string {
 
 export const validateTitle = (title: string) => {
   const value = title?.trim();
+  if (value && value.length < 3) {
+    return {
+      isError: true,
+      errorMessage: 'Title must be at least 3 characters long',
+    };
+  }
   if (!value) {
     return {
       isError: true,
       errorMessage: 'Title is required',
-    };
-  }
-  if (value.length < 3) {
-    return {
-      isError: true,
-      errorMessage: 'Title must be atleast 3 characters long',
     };
   }
   return {
@@ -26,16 +26,16 @@ export const validateTitle = (title: string) => {
 };
 export const validateDescription = (description: string) => {
   const value = description?.trim();
+  if (value && value.length < 5) {
+    return {
+      isError: true,
+      errorMessage: 'Description must be atleast 5 characters long',
+    };
+  }
   if (!value) {
     return {
       isError: true,
       errorMessage: 'Description is required',
-    };
-  }
-  if (value.length < 5) {
-    return {
-      isError: true,
-      errorMessage: 'Description must be atleast 5 characters long',
     };
   }
   return {
