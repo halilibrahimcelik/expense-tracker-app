@@ -6,10 +6,7 @@ import DateTimePicker, {
 } from '@react-native-community/datetimepicker';
 import { AntDesign } from '@expo/vector-icons';
 import { formatDate } from '@/utils';
-import {
-  Currency,
-  useMainExpenseContext,
-} from '@/providers/MainExpenseProvider';
+import { Currency, useMainExpenseCtx } from '@/providers/MainExpenseProvider';
 import { IExpense } from '@/types';
 
 type AndroidMode = 'date' | 'time' | 'datetime' | 'countdown';
@@ -20,7 +17,7 @@ const SingleExpense = ({
   expenseDate,
   title,
 }: IExpense) => {
-  const { currency } = useMainExpenseContext();
+  const { currency } = useMainExpenseCtx();
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState<AndroidMode>('date');
   const [show, setShow] = useState(false);

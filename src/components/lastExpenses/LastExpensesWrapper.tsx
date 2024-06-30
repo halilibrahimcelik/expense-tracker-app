@@ -3,12 +3,12 @@ import React, { useState } from 'react';
 import TotalCount from './TotalCount';
 import { Checkbox, Text, useTheme } from 'react-native-paper';
 import { FontAwesome } from '@expo/vector-icons';
-import { useMainExpenseContext } from '@/providers/MainExpenseProvider';
+import { useMainExpenseCtx } from '@/providers/MainExpenseProvider';
 import SingleExpense from '../singleExpense';
 type Props = {};
 
 const LastExpensesWrapper = (props: Props) => {
-  const { currency, setCurrency } = useMainExpenseContext();
+  const { currency, setCurrency } = useMainExpenseCtx();
   const theme = useTheme();
   return (
     <View>
