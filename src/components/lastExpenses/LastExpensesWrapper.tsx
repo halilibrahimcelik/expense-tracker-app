@@ -8,7 +8,10 @@ import SingleExpense from '../singleExpense';
 type Props = {};
 
 const LastExpensesWrapper = (props: Props) => {
-  const { currency, setCurrency, allExpenses } = useMainExpenseCtx();
+  const { currency, setCurrency, lastSevenDaysExpense, totalExpense } =
+    useMainExpenseCtx();
+  const expenses = lastSevenDaysExpense();
+  const totalCost = totalExpense(expenses);
   const theme = useTheme();
   return (
     <View>
@@ -65,9 +68,10 @@ const LastExpensesWrapper = (props: Props) => {
           </View>
         </View>
       </View>
-      <TotalCount />
+      <TotalCount totalCost={totalCost} />
       <FlatList
-        data={allExpenses}
+        data={expenses}
+        contentContainerStyle={{ gap: 10, marginTop: 20 }}
         renderItem={({ item }) => <SingleExpense {...item} />}
         keyExtractor={(item) => item.id}
       />

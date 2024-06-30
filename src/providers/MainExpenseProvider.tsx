@@ -17,6 +17,8 @@ type InitialState = {
   addNewExpense: (newExpense: IExpense) => void;
   updateAnExpense: (id: string, newExpenseValue: IExpense) => void;
   deleteAnExpense: (id: string) => void;
+  lastSevenDaysExpense: () => IExpense[];
+  totalExpense: (expenses: IExpense[]) => number;
 
   setCurrency: React.Dispatch<React.SetStateAction<Currency>>;
 };
@@ -38,9 +40,23 @@ const MainExpenseProvider = ({ children }: { children: React.ReactNode }) => {
     lira: false,
   });
   const [allExpenses, setAllExpenseses] = useState<IExpense[]>([]);
+
+  const lastSevenDaysExpense = useCallback(() => {
+    const lastSevenDays = new Date();
+    lastSevenDays.setDate(lastSevenDays.getDate() - 7);
+    return allExpenses.filter((expense) => {
+      return new Date(expense.expenseDate) > lastSevenDays;
+    });
+  }, [allExpenses]);
+
+  const totalExpense = useCallback((expenses: IExpense[]) => {
+    return expenses.reduce((acc, expense) => acc + expense.cost, 0);
+  }, []);
+
   const addNewExpense = (newExpense: IExpense) => {
     setAllExpenseses((prev) => [...prev, newExpense]);
   };
+
   const updateAnExpense = useCallback(
     (id: string, newExpenseValue: IExpense) => {
       const updatedExpenses = allExpenses.map((expense) => {
@@ -72,8 +88,17 @@ const MainExpenseProvider = ({ children }: { children: React.ReactNode }) => {
       addNewExpense,
       updateAnExpense,
       deleteAnExpense,
+      lastSevenDaysExpense,
+      totalExpense,
     };
-  }, [allExpenses, currency, deleteAnExpense, updateAnExpense]);
+  }, [
+    allExpenses,
+    currency,
+    deleteAnExpense,
+    updateAnExpense,
+    lastSevenDaysExpense,
+    totalExpense,
+  ]);
   return (
     <MainExpenseContext.Provider value={value}>
       {children}
