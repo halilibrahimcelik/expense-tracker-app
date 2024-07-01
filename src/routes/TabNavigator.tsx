@@ -1,27 +1,35 @@
 import { BottomNavigation, IconButton, useTheme } from 'react-native-paper';
-import { CommonActions, NavigationContainer } from '@react-navigation/native';
+import {
+  CommonActions,
+  NavigationContainer,
+  useNavigation,
+} from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { StyleSheet, View, useColorScheme } from 'react-native';
 import AllExpenses from '@/screens/AllExpenses';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import LastExpenses from '@/screens/LastExpenses';
-import { RootStackParamList, STACK_NAMES } from '@/types';
+import {
+  RootBottomParamList,
+  RootStackParamList,
+  STACK_NAMES,
+  StackNavigation,
+} from '@/types';
 import { useThemeContext } from '@/theme/ThemeProvider';
 import DarkModeToggle from '@/components/UI/DarkModeToggle';
 import { MaterialIcons } from '@expo/vector-icons';
-import { theme as defaultTheme } from '@/theme';
 import { StatusBar } from 'expo-status-bar';
+import { nanoid } from 'nanoid';
 interface Props {}
-const Tab = createBottomTabNavigator<RootStackParamList>();
+const Tab = createBottomTabNavigator<RootBottomParamList>();
+
 const TabNavigator = (props: Props) => {
   const themeContext = useThemeContext();
   const theme = useTheme();
-  const systemColorScheme = useColorScheme() || 'light';
-  const colorScheme = themeContext?.isDarkMode ? 'dark' : systemColorScheme;
+  const navigation = useNavigation<StackNavigation>();
 
   return (
-    // @ts-ignore
-    <NavigationContainer theme={defaultTheme[colorScheme]}>
+    <>
       <Tab.Navigator
         screenOptions={{
           headerShown: true,
@@ -42,6 +50,11 @@ const TabNavigator = (props: Props) => {
                 <View>
                   <IconButton
                     size={24}
+                    onPress={() =>
+                      navigation.navigate(STACK_NAMES.ManageExpenses, {
+                        slug: nanoid(),
+                      })
+                    }
                     icon={() => (
                       <MaterialIcons
                         name={'post-add'}
@@ -130,8 +143,13 @@ const TabNavigator = (props: Props) => {
           }}
         />
       </Tab.Navigator>
+      {/* <ExpenseModal
+        visible={isModalVisible}
+        hideModal={hideModal}
+        showModal={showModal}
+      /> */}
       <StatusBar style={themeContext?.isDarkMode ? 'light' : 'dark'} />
-    </NavigationContainer>
+    </>
   );
 };
 

@@ -1,17 +1,21 @@
-import { StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import React, { useState } from 'react';
 import TotalCount from './TotalCount';
 import { Checkbox, Text, useTheme } from 'react-native-paper';
 import { FontAwesome } from '@expo/vector-icons';
-import { useMainExpenseContext } from '@/providers/MainExpenseProvider';
+import { useMainExpenseCtx } from '@/providers/MainExpenseProvider';
 import SingleExpense from '../singleExpense';
+import { ScrollView } from 'react-native';
 type Props = {};
 
 const LastExpensesWrapper = (props: Props) => {
-  const { currency, setCurrency } = useMainExpenseContext();
+  const { currency, setCurrency, lastSevenDaysExpense, totalExpense } =
+    useMainExpenseCtx();
+  const expenses = lastSevenDaysExpense();
+  const totalCost = totalExpense(expenses);
   const theme = useTheme();
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <View className='flex-row items-center  mb-5 w-full gap-0'>
         <Text variant='bodyLarge'>Choose a currency: </Text>
         <View className='flex-row flex-1 justify-between items-center  gap-x-2 '>
@@ -65,8 +69,29 @@ const LastExpensesWrapper = (props: Props) => {
           </View>
         </View>
       </View>
-      <TotalCount />
-      <SingleExpense />
+      <Text variant='bodyMedium' className='mb-3'>
+        Show last 7 days expenses
+      </Text>
+      <TotalCount totalCost={totalCost} />
+      <View style={{ flex: 1 }}>
+        <FlatList
+          data={expenses}
+          className='w-full h-full'
+          contentContainerStyle={{
+            gap: 10,
+            marginTop: 20,
+            paddingHorizontal: 10,
+            flexGrow: 1,
+            paddingBottom: 20,
+          }}
+          renderItem={({ item }) => (
+            <>
+              <SingleExpense {...item} />
+            </>
+          )}
+          keyExtractor={(item) => item.id}
+        />
+      </View>
     </View>
   );
 };

@@ -2,12 +2,17 @@ import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import { Card, Text } from 'react-native-paper';
 
-type Props = {};
+type Props = {
+  totalCost: number | undefined;
+};
 
-const TotalCount = (props: Props) => {
+const TotalCount = ({ totalCost }: Props) => {
   return (
     <Card mode='contained' className='flex-row justify-between p-2  w-full'>
-      <Text variant='bodyMedium'>Total Expense:</Text>
+      <View className='flex-row justify-between w-full'>
+        <Text variant='bodyMedium'>Total Expense:</Text>
+        <Text variant='bodyMedium'> {totalCost}</Text>
+      </View>
     </Card>
   );
 };
