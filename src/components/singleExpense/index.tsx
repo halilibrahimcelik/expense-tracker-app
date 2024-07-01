@@ -7,10 +7,12 @@ import DateTimePicker, {
 import { AntDesign } from '@expo/vector-icons';
 import { formatDate } from '@/utils';
 import { Currency, useMainExpenseCtx } from '@/providers/MainExpenseProvider';
-import { IExpense, ITimeMode } from '@/types';
+import { IExpense, ITimeMode, STACK_NAMES, StackNavigation } from '@/types';
 import { useThemeContext } from '@/theme/ThemeProvider';
 import { Entypo } from '@expo/vector-icons';
 import DropDownMenu from '../UI/DropdownMenu';
+import DeleteModal from '../UI/DeleteModal';
+import { useNavigation } from '@react-navigation/native';
 const SingleExpense = ({
   cost,
   id,
@@ -19,13 +21,27 @@ const SingleExpense = ({
   title,
 }: IExpense) => {
   const themeCtx = useThemeContext();
+  const navigation = useNavigation<StackNavigation>();
   const [visibleDropdown, setVisibleDropdown] = useState(false);
-  const { currency } = useMainExpenseCtx();
+  const [visibleModal, setVisibleModal] = useState(false);
+  const { currency, deleteAnExpense } = useMainExpenseCtx();
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState<ITimeMode>('date');
   const [show, setShow] = useState(false);
   const theme = useTheme();
   const toggleDropdown = () => setVisibleDropdown((prev) => !prev);
+  const handleCloseModal = () => setVisibleModal(false);
+  const handleDeleteExpense = () => {
+    deleteAnExpense(id);
+  };
+  const handleEditExpense = () => {
+    navigation.navigate(STACK_NAMES.ManageExpenses, {
+      slug: id,
+    });
+  };
+  const handleOpenExpenseModal = () => {
+    setVisibleModal(true);
+  };
   const onChange = (
     event: DateTimePickerEvent,
     selectedDate: Date | undefined
@@ -62,6 +78,8 @@ const SingleExpense = ({
           <DropDownMenu
             visible={visibleDropdown}
             toggleVisibility={toggleDropdown}
+            handleOpenExpenseModal={handleOpenExpenseModal}
+            handleEditExpense={handleEditExpense}
           />
         </View>
 
@@ -118,6 +136,14 @@ const SingleExpense = ({
           </View>
         </View>
       </Card>
+      <DeleteModal
+        title='Delete an expense'
+        text='One you delete an expense, it cannot be undone.
+Are you sure you?'
+        visible={visibleModal}
+        handleClose={handleCloseModal}
+        handleDelete={handleDeleteExpense}
+      />
     </>
   );
 };

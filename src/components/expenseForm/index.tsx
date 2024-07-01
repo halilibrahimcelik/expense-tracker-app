@@ -26,6 +26,7 @@ import { useMainExpenseCtx } from '@/providers/MainExpenseProvider';
 
 type Props = {
   handleNavigation: () => void;
+  expenseId: string;
 };
 type ErrorState = {
   isError: boolean;
@@ -33,10 +34,10 @@ type ErrorState = {
 };
 const numberOfLines = 4;
 
-const ExpenseForm = ({ handleNavigation }: Props) => {
+const ExpenseForm = ({ handleNavigation, expenseId }: Props) => {
   const theme = useTheme();
   const themeCtx = useThemeContext();
-  const { addNewExpense } = useMainExpenseCtx();
+  const { addNewExpense, allExpenses, updateAnExpense } = useMainExpenseCtx();
   const [title, setTitle] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [description, setDescription] = useState('');
@@ -81,13 +82,25 @@ const ExpenseForm = ({ handleNavigation }: Props) => {
       });
     }
   }, [cost, date, description, isSubmitted, title]);
+
+  useEffect(() => {
+    const isExpenseExist = allExpenses.find(
+      (expense) => expense.id === expenseId
+    );
+    if (isExpenseExist) {
+      setTitle(isExpenseExist.title);
+      setDescription(isExpenseExist.description);
+      setCost(isExpenseExist.cost.toString());
+      setDate(isExpenseExist.expenseDate);
+    }
+  }, [allExpenses, expenseId]);
   const resetForm = () => {
     setTitle('');
     setDescription('');
     setCost('');
     setDate(undefined);
     setIsSubmitted(false);
-    //  handleNavigation();
+    handleNavigation();
   };
   const onSubmit = () => {
     const titleError = validateTitle(title);
@@ -111,14 +124,30 @@ const ExpenseForm = ({ handleNavigation }: Props) => {
       //Alert.alert('Error', 'Please fill all the fields');
       return;
     }
-    const newExpense: IExpense = {
-      id: nanoid(),
-      title,
-      description,
-      cost: parseInt(cost),
-      expenseDate: date,
-    };
-    addNewExpense(newExpense);
+
+    const isExpenseExist = allExpenses.find(
+      (expense) => expense.id === expenseId
+    );
+
+    if (isExpenseExist) {
+      const updatedExpense: IExpense = {
+        id: expenseId,
+        title,
+        description,
+        cost: parseInt(cost),
+        expenseDate: date,
+      };
+      updateAnExpense(expenseId, updatedExpense);
+    } else {
+      const newExpense: IExpense = {
+        id: nanoid(),
+        title,
+        description,
+        cost: parseInt(cost),
+        expenseDate: date,
+      };
+      addNewExpense(newExpense);
+    }
     resetForm();
   };
   const onChange = (

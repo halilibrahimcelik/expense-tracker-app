@@ -7,8 +7,15 @@ import { Entypo } from '@expo/vector-icons';
 type Props = {
   visible: boolean;
   toggleVisibility: () => void;
+  handleOpenExpenseModal: () => void;
+  handleEditExpense: () => void;
 };
-const DropDownMenu = ({ visible, toggleVisibility }: Props) => {
+const DropDownMenu = ({
+  visible,
+  toggleVisibility,
+  handleOpenExpenseModal,
+  handleEditExpense,
+}: Props) => {
   const theme = useTheme();
   return (
     <Menu
@@ -58,7 +65,10 @@ const DropDownMenu = ({ visible, toggleVisibility }: Props) => {
         leadingIcon={() => (
           <MaterialIcons name='edit' size={24} color={theme.colors.primary} />
         )}
-        onPress={() => {}}
+        onPress={() => {
+          toggleVisibility();
+          handleEditExpense();
+        }}
         title='Edit'
       />
       <Menu.Item
@@ -77,7 +87,10 @@ const DropDownMenu = ({ visible, toggleVisibility }: Props) => {
         leadingIcon={() => (
           <MaterialIcons name='delete' size={24} color={theme.colors.primary} />
         )}
-        onPress={() => {}}
+        onPress={() => {
+          handleOpenExpenseModal();
+          toggleVisibility();
+        }}
         title={'Delete'}
       />
     </Menu>

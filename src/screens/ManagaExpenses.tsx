@@ -35,7 +35,10 @@ const ManagaExpenses = ({ navigation, route }: Props) => {
                 accessible={false}
               >
                 <Container>
-                  <ExpenseForm handleNavigation={handleNavigation} />
+                  <ExpenseForm
+                    expenseId={route.params.slug}
+                    handleNavigation={handleNavigation}
+                  />
                 </Container>
               </TouchableWithoutFeedback>
             </ScrollView>
