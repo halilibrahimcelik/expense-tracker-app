@@ -73,7 +73,7 @@ const SingleExpense = ({
   };
   return (
     <>
-      <Card className='px-4 pt-6 pb-4 relative h-auto flex-1' mode='elevated'>
+      <Card className='px-4 pt-6 pb-4 relative h-auto ' mode='elevated'>
         <View className='absolute top-[-24px] right-[-20px]'>
           <DropDownMenu
             visible={visibleDropdown}
