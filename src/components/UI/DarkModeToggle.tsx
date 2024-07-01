@@ -1,5 +1,5 @@
 import { StyleSheet, View } from 'react-native';
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import {
   IconButton,
   Switch,
@@ -9,12 +9,38 @@ import {
 } from 'react-native-paper';
 import { useThemeContext } from '@/theme/ThemeProvider';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { Button } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type Props = {};
-
 const DarkModeToggle = (props: Props) => {
   const themeContext = useThemeContext();
+  const storeData = async (isDarkMode: boolean | undefined) => {
+    try {
+      await AsyncStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const getTheme = useCallback(async () => {
+    try {
+      const storedTheme = await AsyncStorage.getItem('theme');
+      console.log('Stored theme:', storedTheme);
+      if (storedTheme === 'dark') {
+        themeContext?.toggleTheme();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [themeContext]);
+
+  const handleThemeToggle = async () => {
+    themeContext?.toggleTheme();
+    storeData(!themeContext?.isDarkMode);
+  };
+  useEffect(() => {
+    getTheme();
+  }, []);
+
   const theme = useTheme();
   return (
     <View className='flex flex-row gap-2 items-center'>
@@ -24,7 +50,7 @@ const DarkModeToggle = (props: Props) => {
         <View className='flex flex-row'>
           <IconButton
             size={24}
-            onPress={() => themeContext?.toggleTheme()}
+            onPress={handleThemeToggle}
             icon={() => (
               <MaterialIcons
                 name={themeContext?.isDarkMode ? 'dark-mode' : 'light-mode'}
