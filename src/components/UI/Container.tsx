@@ -6,6 +6,10 @@ type Props = {
 };
 
 const Container = (props: Props) => {
-  return <View className='px-6 py-10 '>{props.children}</View>;
+  return (
+    <View style={{ flex: 1 }} className='px-6 py-10 '>
+      {props.children}
+    </View>
+  );
 };
 export default Container;

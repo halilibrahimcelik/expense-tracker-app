@@ -24,7 +24,6 @@ const DarkModeToggle = (props: Props) => {
   const getTheme = useCallback(async () => {
     try {
       const storedTheme = await AsyncStorage.getItem('theme');
-      console.log('Stored theme:', storedTheme);
       if (storedTheme === 'dark') {
         themeContext?.toggleTheme();
       }
@@ -39,6 +38,7 @@ const DarkModeToggle = (props: Props) => {
   };
   useEffect(() => {
     getTheme();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const theme = useTheme();

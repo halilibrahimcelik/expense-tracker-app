@@ -51,7 +51,7 @@ const SingleExpense = ({
     }
   };
   return (
-    <Card className='p-2 h-auto' mode='elevated'>
+    <Card className='p-2 h-auto flex-1' mode='elevated'>
       <View className='flex-row  justify-between'>
         <View className='flex-shrink '>
           <Text className='mb-2' variant='titleSmall'>

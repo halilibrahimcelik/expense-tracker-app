@@ -87,7 +87,7 @@ const ExpenseForm = ({ handleNavigation }: Props) => {
     setCost('');
     setDate(undefined);
     setIsSubmitted(false);
-    handleNavigation();
+    //  handleNavigation();
   };
   const onSubmit = () => {
     const titleError = validateTitle(title);
