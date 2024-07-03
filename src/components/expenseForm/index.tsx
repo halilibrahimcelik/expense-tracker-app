@@ -107,12 +107,12 @@ const ExpenseForm = ({ handleNavigation, expenseId }: Props) => {
 
   const saveExpenseToDb = async (expense: IExpense) => {
     try {
-      set(ref(database, 'expenses/' + expense.id), { expense });
+      set(ref(database, 'expenses/' + expense.id), expense);
     } catch (error) {
       console.log(error);
     }
   };
-  const onSubmit = () => {
+  const onSubmit = async () => {
     const titleError = validateTitle(title);
 
     const descriptionError = validateDescription(description);
@@ -157,7 +157,7 @@ const ExpenseForm = ({ handleNavigation, expenseId }: Props) => {
         expenseDate: date,
       };
       addNewExpense(newExpense);
-      saveExpenseToDb(newExpense);
+      await saveExpenseToDb(newExpense);
     }
     resetForm();
   };
