@@ -17,6 +17,7 @@
     "@react-navigation/native-stack": "^6.9.26",
     "expo": "~51.0.13",
     "expo-status-bar": "~1.12.1",
+    "firebase": "^10.12.2",
     "nanoid": "^5.0.7",
     "nativewind": "^2.0.11",
     "react": "18.2.0",
@@ -30,9 +31,12 @@
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@types/react": "~18.2.45",
+    "@types/react-native-dotenv": "^0.2.2",
     "@types/react-native-vector-icons": "^6.4.18",
+    "add": "^2.0.6",
     "eslint": "^8.57.0",
     "eslint-config-expo": "^7.0.0",
+    "react-native-dotenv": "^3.4.11",
     "tailwindcss": "3.3.2",
     "typescript": "^5.1.3"
   },

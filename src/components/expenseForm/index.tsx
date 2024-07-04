@@ -23,6 +23,13 @@ import { AntDesign } from '@expo/vector-icons';
 import { useThemeContext } from '@/theme/ThemeProvider';
 import { nanoid } from 'nanoid';
 import { useMainExpenseCtx } from '@/providers/MainExpenseProvider';
+import { ref, set } from 'firebase/database';
+import database from '@/firebase/firebase.config';
+import {
+  getExpensesFromDb,
+  saveExpenseToDb,
+  updateExpenseInDb,
+} from '@/utils/httpRequest';
 
 type Props = {
   handleNavigation: () => void;
@@ -82,7 +89,6 @@ const ExpenseForm = ({ handleNavigation, expenseId }: Props) => {
       });
     }
   }, [cost, date, description, isSubmitted, title]);
-
   useEffect(() => {
     const isExpenseExist = allExpenses.find(
       (expense) => expense.id === expenseId
@@ -102,7 +108,8 @@ const ExpenseForm = ({ handleNavigation, expenseId }: Props) => {
     setIsSubmitted(false);
     handleNavigation();
   };
-  const onSubmit = () => {
+
+  const onSubmit = async () => {
     const titleError = validateTitle(title);
 
     const descriptionError = validateDescription(description);
@@ -138,6 +145,7 @@ const ExpenseForm = ({ handleNavigation, expenseId }: Props) => {
         expenseDate: date,
       };
       updateAnExpense(expenseId, updatedExpense);
+      updateExpenseInDb(expenseId, updatedExpense);
     } else {
       const newExpense: IExpense = {
         id: nanoid(),
@@ -147,6 +155,7 @@ const ExpenseForm = ({ handleNavigation, expenseId }: Props) => {
         expenseDate: date,
       };
       addNewExpense(newExpense);
+      date && saveExpenseToDb(newExpense);
     }
     resetForm();
   };

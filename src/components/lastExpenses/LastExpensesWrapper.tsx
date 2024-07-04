@@ -1,11 +1,10 @@
 import { FlatList, StyleSheet, View } from 'react-native';
-import React, { useState } from 'react';
-import TotalCount from './TotalCount';
+import TotalCount from '../UI/TotalCount';
 import { Checkbox, Text, useTheme } from 'react-native-paper';
 import { FontAwesome } from '@expo/vector-icons';
 import { useMainExpenseCtx } from '@/providers/MainExpenseProvider';
 import SingleExpense from '../singleExpense';
-import { ScrollView } from 'react-native';
+import ExpenseList from '../expenseList';
 type Props = {};
 
 const LastExpensesWrapper = (props: Props) => {
@@ -73,25 +72,7 @@ const LastExpensesWrapper = (props: Props) => {
         Show last 7 days expenses
       </Text>
       <TotalCount totalCost={totalCost} />
-      <View style={{ flex: 1 }}>
-        <FlatList
-          data={expenses}
-          className='w-full h-full'
-          contentContainerStyle={{
-            gap: 10,
-            marginTop: 20,
-            paddingHorizontal: 10,
-            flexGrow: 1,
-            paddingBottom: 20,
-          }}
-          renderItem={({ item }) => (
-            <>
-              <SingleExpense {...item} />
-            </>
-          )}
-          keyExtractor={(item) => item.id}
-        />
-      </View>
+      <ExpenseList expenses={expenses} />
     </View>
   );
 };

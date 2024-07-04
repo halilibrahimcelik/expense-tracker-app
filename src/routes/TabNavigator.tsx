@@ -20,6 +20,8 @@ import DarkModeToggle from '@/components/UI/DarkModeToggle';
 import { MaterialIcons } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
 import { nanoid } from 'nanoid';
+import { useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 interface Props {}
 const Tab = createBottomTabNavigator<RootBottomParamList>();
 
@@ -27,7 +29,21 @@ const TabNavigator = (props: Props) => {
   const themeContext = useThemeContext();
   const theme = useTheme();
   const navigation = useNavigation<StackNavigation>();
+  useEffect(() => {
+    const getTheme = async () => {
+      try {
+        const storedTheme = await AsyncStorage.getItem('theme');
+        if (storedTheme === 'dark') {
+          themeContext?.toggleTheme();
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getTheme();
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <>
       <Tab.Navigator

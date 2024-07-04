@@ -1,5 +1,5 @@
 import { Platform, Pressable, StyleSheet, View } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, Icon, IconButton, Text, useTheme } from 'react-native-paper';
 import DateTimePicker, {
   DateTimePickerEvent,
@@ -13,6 +13,7 @@ import { Entypo } from '@expo/vector-icons';
 import DropDownMenu from '../UI/DropdownMenu';
 import DeleteModal from '../UI/DeleteModal';
 import { useNavigation } from '@react-navigation/native';
+import { deleteExpenseFromDb } from '@/utils/httpRequest';
 const SingleExpense = ({
   cost,
   id,
@@ -29,10 +30,17 @@ const SingleExpense = ({
   const [mode, setMode] = useState<ITimeMode>('date');
   const [show, setShow] = useState(false);
   const theme = useTheme();
+
+  useEffect(() => {
+    if (expenseDate) {
+      setDate(new Date(expenseDate));
+    }
+  }, [expenseDate]);
   const toggleDropdown = () => setVisibleDropdown((prev) => !prev);
   const handleCloseModal = () => setVisibleModal(false);
   const handleDeleteExpense = () => {
     deleteAnExpense(id);
+    deleteExpenseFromDb(id);
   };
   const handleEditExpense = () => {
     navigation.navigate(STACK_NAMES.ManageExpenses, {
@@ -73,7 +81,7 @@ const SingleExpense = ({
   };
   return (
     <>
-      <Card className='px-4 pt-6 pb-4 relative h-auto flex-1' mode='elevated'>
+      <Card className='px-4 pt-6 pb-4 relative h-auto ' mode='elevated'>
         <View className='absolute top-[-24px] right-[-20px]'>
           <DropDownMenu
             visible={visibleDropdown}

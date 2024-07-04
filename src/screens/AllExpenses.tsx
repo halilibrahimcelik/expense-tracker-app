@@ -4,6 +4,7 @@ import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { RootBottomParamList, STACK_NAMES } from '@/types';
 import FadeInView from '@/components/animations/FadeInView';
 import Container from '@/components/UI/Container';
+import AllExpensesWrapper from '@/components/allExpenses/AllExpensesWrapper';
 
 interface Props
   extends BottomTabScreenProps<RootBottomParamList, STACK_NAMES.AllExpenses> {}
@@ -12,7 +13,7 @@ const AllExpenses = ({ navigation, route }: Props) => {
   return (
     <FadeInView>
       <Container>
-        <Text className='text-xl'>AllExpenses</Text>
+        <AllExpensesWrapper />
       </Container>
     </FadeInView>
   );

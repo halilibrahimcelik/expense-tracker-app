@@ -21,25 +21,10 @@ const DarkModeToggle = (props: Props) => {
       console.log(error);
     }
   };
-  const getTheme = useCallback(async () => {
-    try {
-      const storedTheme = await AsyncStorage.getItem('theme');
-      if (storedTheme === 'dark') {
-        themeContext?.toggleTheme();
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }, [themeContext]);
-
   const handleThemeToggle = async () => {
     themeContext?.toggleTheme();
     storeData(!themeContext?.isDarkMode);
   };
-  useEffect(() => {
-    getTheme();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const theme = useTheme();
   return (
