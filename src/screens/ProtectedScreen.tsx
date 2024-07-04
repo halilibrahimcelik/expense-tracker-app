@@ -15,7 +15,7 @@ const ProtectedScreen = (props: Props) => {
     <AuthStack.Navigator
       screenOptions={{
         headerShown: false,
-        presentation: 'modal',
+        presentation: 'transparentModal',
       }}
     >
       {isAuth ? (
