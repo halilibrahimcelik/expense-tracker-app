@@ -13,6 +13,7 @@ import { Entypo } from '@expo/vector-icons';
 import DropDownMenu from '../UI/DropdownMenu';
 import DeleteModal from '../UI/DeleteModal';
 import { useNavigation } from '@react-navigation/native';
+import { deleteExpenseFromDb } from '@/utils/httpRequest';
 const SingleExpense = ({
   cost,
   id,
@@ -31,12 +32,15 @@ const SingleExpense = ({
   const theme = useTheme();
 
   useEffect(() => {
-    setDate(expenseDate);
+    if (expenseDate) {
+      setDate(new Date(expenseDate));
+    }
   }, [expenseDate]);
   const toggleDropdown = () => setVisibleDropdown((prev) => !prev);
   const handleCloseModal = () => setVisibleModal(false);
   const handleDeleteExpense = () => {
     deleteAnExpense(id);
+    deleteExpenseFromDb(id);
   };
   const handleEditExpense = () => {
     navigation.navigate(STACK_NAMES.ManageExpenses, {

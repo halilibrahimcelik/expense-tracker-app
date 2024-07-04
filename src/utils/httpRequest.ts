@@ -1,7 +1,7 @@
 import { EXPENSES_DB } from '@/constants';
 import database from '@/firebase/firebase.config';
 import { IExpense } from '@/types';
-import { child, get, ref, set, update } from 'firebase/database';
+import { child, get, ref, remove, set, update } from 'firebase/database';
 export const getExpensesFromDb = async () => {
   try {
     const dbRef = ref(database);
@@ -42,6 +42,14 @@ export const saveExpenseToDb = async (expense: IExpense) => {
 export const updateExpenseInDb = async (id: string, expense: IExpense) => {
   try {
     return update(ref(database, `${EXPENSES_DB}/` + id), expense);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const deleteExpenseFromDb = async (id: string) => {
+  try {
+    return remove(ref(database, `${EXPENSES_DB}/` + id));
   } catch (error) {
     console.log(error);
   }
