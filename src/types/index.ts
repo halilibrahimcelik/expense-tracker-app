@@ -35,8 +35,8 @@ export type RootBottomParamList = {
 };
 export type RootStackParamList = {
   [STACK_NAMES.Home]: ITitle;
-  [STACK_NAMES.SignIn]: ISlug;
-  [STACK_NAMES.SignUp]: ISlug;
+  [STACK_NAMES.SignIn]: undefined;
+  [STACK_NAMES.SignUp]: undefined;
   [STACK_NAMES.ExpenseForm]: {
     screen: string;
     params: ISlug;

@@ -11,7 +11,6 @@ const AuthStack = createNativeStackNavigator<RootStackParamList>();
 
 const ProtectedScreen = (props: Props) => {
   const { isAuth } = useAuthContext();
-
   return (
     <AuthStack.Navigator
       screenOptions={{

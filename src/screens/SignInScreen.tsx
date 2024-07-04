@@ -19,11 +19,7 @@ const SignInScreen = (props: Props) => {
       </Text>
       <Button
         mode='contained'
-        onPress={() =>
-          navigation.replace(STACK_NAMES.SignUp, {
-            slug: 'signup',
-          })
-        }
+        onPress={() => navigation.replace(STACK_NAMES.SignUp)}
         style={{ marginTop: 20 }}
       >
         Sign Up
