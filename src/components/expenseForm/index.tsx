@@ -25,6 +25,7 @@ import { nanoid } from 'nanoid';
 import { useMainExpenseCtx } from '@/providers/MainExpenseProvider';
 import { ref, set } from 'firebase/database';
 import database from '@/firebase/firebase.config';
+import { getExpensesFromDb, saveExpenseToDb } from '@/utils/httpRequest';
 
 type Props = {
   handleNavigation: () => void;
@@ -84,7 +85,6 @@ const ExpenseForm = ({ handleNavigation, expenseId }: Props) => {
       });
     }
   }, [cost, date, description, isSubmitted, title]);
-
   useEffect(() => {
     const isExpenseExist = allExpenses.find(
       (expense) => expense.id === expenseId
@@ -105,13 +105,6 @@ const ExpenseForm = ({ handleNavigation, expenseId }: Props) => {
     handleNavigation();
   };
 
-  const saveExpenseToDb = async (expense: IExpense) => {
-    try {
-      set(ref(database, 'expenses/' + expense.id), expense);
-    } catch (error) {
-      console.log(error);
-    }
-  };
   const onSubmit = async () => {
     const titleError = validateTitle(title);
 

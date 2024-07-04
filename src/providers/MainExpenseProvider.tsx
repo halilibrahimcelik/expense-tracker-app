@@ -1,8 +1,10 @@
 import { IExpense } from '@/types';
+import { getExpensesFromDb } from '@/utils/httpRequest';
 import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -40,6 +42,16 @@ const MainExpenseProvider = ({ children }: { children: React.ReactNode }) => {
     lira: false,
   });
   const [allExpenses, setAllExpenseses] = useState<IExpense[]>([]);
+
+  useEffect(() => {
+    const getExpenses = async () => {
+      const expenses = (await getExpensesFromDb()) as IExpense[];
+      if (expenses) {
+        setAllExpenseses(expenses);
+      }
+    };
+    getExpenses();
+  }, []);
 
   const lastSevenDaysExpense = useCallback(() => {
     const lastSevenDays = new Date();
