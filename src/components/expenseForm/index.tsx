@@ -155,7 +155,7 @@ const ExpenseForm = ({ handleNavigation, expenseId }: Props) => {
         expenseDate: date,
       };
       addNewExpense(newExpense);
-      await saveExpenseToDb(newExpense);
+      date && saveExpenseToDb(newExpense);
     }
     resetForm();
   };

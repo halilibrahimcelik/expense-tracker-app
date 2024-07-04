@@ -1,5 +1,5 @@
 import { Platform, Pressable, StyleSheet, View } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, Icon, IconButton, Text, useTheme } from 'react-native-paper';
 import DateTimePicker, {
   DateTimePickerEvent,
@@ -29,6 +29,10 @@ const SingleExpense = ({
   const [mode, setMode] = useState<ITimeMode>('date');
   const [show, setShow] = useState(false);
   const theme = useTheme();
+
+  useEffect(() => {
+    setDate(expenseDate);
+  }, [expenseDate]);
   const toggleDropdown = () => setVisibleDropdown((prev) => !prev);
   const handleCloseModal = () => setVisibleModal(false);
   const handleDeleteExpense = () => {
