@@ -17,6 +17,7 @@ import ExpenseForm from '@/components/expenseForm';
 
 interface Props extends ManageExpensesProps {}
 const ManagaExpenses = ({ navigation, route }: Props) => {
+  console.log(route);
   const handleNavigation = () => {
     navigation.goBack();
   };
@@ -36,7 +37,7 @@ const ManagaExpenses = ({ navigation, route }: Props) => {
               >
                 <Container>
                   <ExpenseForm
-                    expenseId={route.params.slug}
+                    expenseId={route?.params?.params?.slug}
                     handleNavigation={handleNavigation}
                   />
                 </Container>

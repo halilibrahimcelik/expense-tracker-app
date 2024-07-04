@@ -41,7 +41,7 @@ type ErrorState = {
 };
 const numberOfLines = 4;
 
-const ExpenseForm = ({ handleNavigation, expenseId }: Props) => {
+const ExpenseForm = ({ handleNavigation, expenseId = '222' }: Props) => {
   const theme = useTheme();
   const themeCtx = useThemeContext();
   const { addNewExpense, allExpenses, updateAnExpense } = useMainExpenseCtx();
