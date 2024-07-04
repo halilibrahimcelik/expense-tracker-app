@@ -1,20 +1,6 @@
 import database from '@/firebase/firebase.config';
 import { IExpense } from '@/types';
-import { child, get, ref, set } from 'firebase/database';
-export const saveExpenseToDb = async (expense: IExpense) => {
-  try {
-    set(ref(database, 'expenses/' + expense.id), expense);
-  } catch (error) {
-    console.log(error);
-  }
-};
-export const updateExpenseInDb = async (id: string, expense: IExpense) => {
-  try {
-  } catch (error) {
-    console.log(error);
-  }
-};
-
+import { child, get, ref, set, update } from 'firebase/database';
 export const getExpensesFromDb = async () => {
   try {
     const dbRef = ref(database);
@@ -38,5 +24,20 @@ export const getExpensesFromDb = async () => {
   } catch (error) {
     console.log(error);
     return []; // Return an empty array in case of error
+  }
+};
+
+export const saveExpenseToDb = async (expense: IExpense) => {
+  try {
+    set(ref(database, 'expenses/' + expense.id), expense);
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const updateExpenseInDb = async (id: string, expense: IExpense) => {
+  try {
+    return update(ref(database, 'expenses/' + id), expense);
+  } catch (error) {
+    console.log(error);
   }
 };

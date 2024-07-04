@@ -25,7 +25,11 @@ import { nanoid } from 'nanoid';
 import { useMainExpenseCtx } from '@/providers/MainExpenseProvider';
 import { ref, set } from 'firebase/database';
 import database from '@/firebase/firebase.config';
-import { getExpensesFromDb, saveExpenseToDb } from '@/utils/httpRequest';
+import {
+  getExpensesFromDb,
+  saveExpenseToDb,
+  updateExpenseInDb,
+} from '@/utils/httpRequest';
 
 type Props = {
   handleNavigation: () => void;
@@ -141,6 +145,7 @@ const ExpenseForm = ({ handleNavigation, expenseId }: Props) => {
         expenseDate: date,
       };
       updateAnExpense(expenseId, updatedExpense);
+      updateExpenseInDb(expenseId, updatedExpense);
     } else {
       const newExpense: IExpense = {
         id: nanoid(),
