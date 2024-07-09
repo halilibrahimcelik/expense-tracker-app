@@ -10,6 +10,7 @@ type Props = {
 
 const AuthForm = (props: Props) => {
   const theme = useTheme();
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] =
     useState<boolean>(false);
@@ -52,10 +53,42 @@ const AuthForm = (props: Props) => {
         }));
       }
     };
-    if (confirmPassword) {
+    if (confirmPassword && isSubmitted) {
       validatePassword(confirmPassword);
     }
-  }, [confirmPassword, password]);
+  }, [confirmPassword, isSubmitted, password]);
+  const onSubmit = async () => {
+    const { userName, email, password } = userData;
+    setIsSubmitted(true);
+    if (!userName) {
+      setErrorState((prev) => ({
+        ...prev,
+        userName: { isError: true, errorMessage: 'User name is required' },
+      }));
+    }
+    if (!email) {
+      setErrorState((prev) => ({
+        ...prev,
+        email: { isError: true, errorMessage: 'Email is required' },
+      }));
+    }
+    if (!password) {
+      setErrorState((prev) => ({
+        ...prev,
+        password: { isError: true, errorMessage: 'Password is required' },
+      }));
+    }
+    if (password !== confirmPassword) {
+      setErrorState((prev) => ({
+        ...prev,
+        password: { isError: true, errorMessage: 'Password does not match' },
+      }));
+    }
+
+    if (!userName || !email || !password || password !== confirmPassword)
+      return;
+    console.log(userData);
+  };
   return (
     <View>
       <View className='gap-3 '>
@@ -159,7 +192,7 @@ const AuthForm = (props: Props) => {
           </View>
         </View>
         <View>
-          <Button className='mt-2' mode='elevated'>
+          <Button onPress={onSubmit} className='mt-2' mode='elevated'>
             {props.isSignUp ? 'Register' : 'Login'}
           </Button>
         </View>
