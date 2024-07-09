@@ -1,12 +1,14 @@
-import { Alert, StyleSheet, Text, View } from 'react-native';
+import { Alert, Text, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Button, TextInput, useTheme } from 'react-native-paper';
 import CustomErrorMessage from '../UI/CustomErrorMessage';
-import { ErrorState, IUserData } from '@/types';
+import { ErrorState, IUserData, STACK_NAMES, StackNavigation } from '@/types';
 import { auth } from '@/firebase/firebase.config';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { saveUserToDb } from '@/utils/httpRequest';
 import { useAuthContext } from '@/providers/AuthProvider';
+import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type Props = {
   isSignUp: boolean;
@@ -15,8 +17,9 @@ type Props = {
 const AuthForm = (props: Props) => {
   const theme = useTheme();
   const { setUserCredentials } = useAuthContext();
-
+  const navigation = useNavigation<StackNavigation>();
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] =
     useState<boolean>(false);
@@ -138,8 +141,10 @@ const AuthForm = (props: Props) => {
         }));
       }
 
-      if (!userName || !email || !password || password !== confirmPassword)
+      if (!userName || !email || !password || password !== confirmPassword) {
         return;
+      }
+      setIsLoading(true);
       const res = await createUserWithEmailAndPassword(auth, email, password);
       if (res.user.uid) {
         setIsSubmitted(false);
@@ -150,13 +155,21 @@ const AuthForm = (props: Props) => {
           user: userName,
           userId: res.user.uid,
         });
+        await AsyncStorage.setItem('userId', res.user.uid);
+        await AsyncStorage.setItem('isLoggedIn', 'true');
+        navigation.navigate(STACK_NAMES.ExpenseForm, {
+          params: { slug: 'add' },
+          screen: STACK_NAMES.ExpenseForm,
+        });
+        setIsLoading(false);
         resetForm();
       }
       // console.log(res);
       // console.log(userData);
     } catch (error) {
       console.log(error);
-      Alert.alert('Error', 'Something went wrong try again');
+      setIsLoading(false);
+      Alert.alert('Error', 'Something went wrong ' + error);
     }
   };
   return (
@@ -262,8 +275,19 @@ const AuthForm = (props: Props) => {
           </View>
         </View>
         <View>
-          <Button loading onPress={onSubmit} className='mt-2' mode='elevated'>
-            {props.isSignUp ? 'Register' : 'Login'}
+          <Button
+            loading={isLoading}
+            onPress={onSubmit}
+            className='mt-2'
+            mode='elevated'
+          >
+            {props.isSignUp
+              ? isLoading
+                ? ''
+                : 'Register'
+              : isLoading
+              ? ''
+              : 'Login'}
           </Button>
         </View>
       </View>
