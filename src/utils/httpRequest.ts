@@ -1,4 +1,4 @@
-import { EXPENSES_DB } from '@/constants';
+import { EXPENSES_DB, USERS_DB } from '@/constants';
 import database from '@/firebase/firebase.config';
 import { IExpense } from '@/types';
 import { child, get, ref, remove, set, update } from 'firebase/database';
@@ -28,10 +28,18 @@ export const getExpensesFromDb = async () => {
   }
 };
 
-export const saveExpenseToDb = async (expense: IExpense) => {
+export const saveUserToDb = async (userId: string, userInfo: {}) => {
   try {
-    console.log('expense', expense.expenseDate);
-    set(ref(database, `${EXPENSES_DB}/` + expense.id), {
+    set(ref(database, `${USERS_DB}/` + userId), {
+      ...userInfo,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const saveExpenseToDb = async (expense: IExpense, userId: string) => {
+  try {
+    set(ref(database, `${EXPENSES_DB}/` + userId), {
       ...expense,
       expenseDate: expense.expenseDate.toISOString(),
     });

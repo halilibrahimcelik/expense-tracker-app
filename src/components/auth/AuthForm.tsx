@@ -1,8 +1,12 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Alert, StyleSheet, Text, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Button, TextInput, useTheme } from 'react-native-paper';
 import CustomErrorMessage from '../UI/CustomErrorMessage';
 import { ErrorState, IUserData } from '@/types';
+import { auth } from '@/firebase/firebase.config';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { saveUserToDb } from '@/utils/httpRequest';
+import { useAuthContext } from '@/providers/AuthProvider';
 
 type Props = {
   isSignUp: boolean;
@@ -10,6 +14,8 @@ type Props = {
 
 const AuthForm = (props: Props) => {
   const theme = useTheme();
+  const { setUserCredentials } = useAuthContext();
+
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] =
@@ -53,41 +59,105 @@ const AuthForm = (props: Props) => {
         }));
       }
     };
+    const validateEmail = (text: string) => {
+      if (!text) {
+        setErrorState((prev) => ({
+          ...prev,
+          email: { isError: true, errorMessage: 'Email is required' },
+        }));
+      } else {
+        setErrorState((prev) => ({
+          ...prev,
+          email: { isError: false, errorMessage: '' },
+        }));
+      }
+    };
+    const validateUserName = (text: string) => {
+      if (!text) {
+        setErrorState((prev) => ({
+          ...prev,
+          userName: { isError: true, errorMessage: 'User name is required' },
+        }));
+      } else {
+        setErrorState((prev) => ({
+          ...prev,
+          userName: { isError: false, errorMessage: '' },
+        }));
+      }
+    };
     if (confirmPassword && isSubmitted) {
       validatePassword(confirmPassword);
     }
-  }, [confirmPassword, isSubmitted, password]);
+    if (userData.email && isSubmitted) {
+      validateEmail(userData.email);
+    }
+    if (userData.userName && isSubmitted) {
+      validateUserName(userData.userName);
+    }
+  }, [
+    confirmPassword,
+    isSubmitted,
+    password,
+    userData.email,
+    userData.userName,
+  ]);
+  const resetForm = () => {
+    setUserData({
+      userName: '',
+      email: '',
+      password: '',
+    });
+    setIsSubmitted(false);
+  };
   const onSubmit = async () => {
     const { userName, email, password } = userData;
-    setIsSubmitted(true);
-    if (!userName) {
-      setErrorState((prev) => ({
-        ...prev,
-        userName: { isError: true, errorMessage: 'User name is required' },
-      }));
-    }
-    if (!email) {
-      setErrorState((prev) => ({
-        ...prev,
-        email: { isError: true, errorMessage: 'Email is required' },
-      }));
-    }
-    if (!password) {
-      setErrorState((prev) => ({
-        ...prev,
-        password: { isError: true, errorMessage: 'Password is required' },
-      }));
-    }
-    if (password !== confirmPassword) {
-      setErrorState((prev) => ({
-        ...prev,
-        password: { isError: true, errorMessage: 'Password does not match' },
-      }));
-    }
+    try {
+      setIsSubmitted(true);
+      if (!userName) {
+        setErrorState((prev) => ({
+          ...prev,
+          userName: { isError: true, errorMessage: 'User name is required' },
+        }));
+      }
+      if (!email) {
+        setErrorState((prev) => ({
+          ...prev,
+          email: { isError: true, errorMessage: 'Email is required' },
+        }));
+      }
+      if (!password) {
+        setErrorState((prev) => ({
+          ...prev,
+          password: { isError: true, errorMessage: 'Password is required' },
+        }));
+      }
+      if (password !== confirmPassword) {
+        setErrorState((prev) => ({
+          ...prev,
+          password: { isError: true, errorMessage: 'Password does not match' },
+        }));
+      }
 
-    if (!userName || !email || !password || password !== confirmPassword)
-      return;
-    console.log(userData);
+      if (!userName || !email || !password || password !== confirmPassword)
+        return;
+      const res = await createUserWithEmailAndPassword(auth, email, password);
+      if (res.user.uid) {
+        setIsSubmitted(false);
+        saveUserToDb(res.user.uid, { userName, email, id: res.user.uid });
+        setUserCredentials({
+          isAuth: true,
+          token: res.user.refreshToken,
+          user: userName,
+          userId: res.user.uid,
+        });
+        resetForm();
+      }
+      // console.log(res);
+      // console.log(userData);
+    } catch (error) {
+      console.log(error);
+      Alert.alert('Error', 'Something went wrong try again');
+    }
   };
   return (
     <View>
@@ -192,7 +262,7 @@ const AuthForm = (props: Props) => {
           </View>
         </View>
         <View>
-          <Button onPress={onSubmit} className='mt-2' mode='elevated'>
+          <Button loading onPress={onSubmit} className='mt-2' mode='elevated'>
             {props.isSignUp ? 'Register' : 'Login'}
           </Button>
         </View>
