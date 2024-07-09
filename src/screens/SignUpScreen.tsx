@@ -1,11 +1,12 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import Container from '@/components/UI/Container';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList, STACK_NAMES } from '@/types';
-import { Button, Text } from 'react-native-paper';
+import { Button, Divider, Text } from 'react-native-paper';
 import SignUpWrapper from '@/components/auth/SignUpWrapper';
+import AuthDivider from '@/components/UI/AuthDivider';
 
 type Props = {};
 
@@ -16,10 +17,11 @@ const SignUpScreen = (props: Props) => {
   return (
     <Container customClass={'mt-10  '}>
       <SignUpWrapper />
+      <AuthDivider isSignUp={true} />
       <Button
         mode='contained'
         onPress={() => navigation.replace(STACK_NAMES.SignIn)}
-        style={{ marginTop: 20 }}
+        style={{}}
       >
         Sign In
       </Button>

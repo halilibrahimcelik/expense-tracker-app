@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { TextInput, useTheme } from 'react-native-paper';
+import { Button, TextInput, useTheme } from 'react-native-paper';
 import CustomErrorMessage from '../UI/CustomErrorMessage';
 import { ErrorState, IUserData } from '@/types';
 
@@ -58,7 +58,7 @@ const AuthForm = (props: Props) => {
   }, [confirmPassword, password]);
   return (
     <View>
-      <View className='gap-3'>
+      <View className='gap-3 '>
         <View>
           <TextInput
             returnKeyLabel='done'
@@ -84,8 +84,9 @@ const AuthForm = (props: Props) => {
         <View>
           <TextInput
             returnKeyLabel='done'
-            label='Email'
+            label={<Text>Email</Text>}
             autoComplete='email'
+            inputMode='email'
             placeholderTextColor={theme.colors.primaryContainer}
             theme={{ roundness: 8 }}
             mode='outlined'
@@ -157,11 +158,14 @@ const AuthForm = (props: Props) => {
             )}
           </View>
         </View>
+        <View>
+          <Button className='mt-2' mode='elevated'>
+            {props.isSignUp ? 'Register' : 'Login'}
+          </Button>
+        </View>
       </View>
     </View>
   );
 };
 
 export default AuthForm;
-
-const styles = StyleSheet.create({});
