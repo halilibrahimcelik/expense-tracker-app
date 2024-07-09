@@ -1,5 +1,6 @@
 import { NavigationProp } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { ViewProps } from 'react-native';
 
 export enum STACK_NAMES {
   Home = 'Home',
@@ -9,6 +10,9 @@ export enum STACK_NAMES {
   SignUp = 'Sign Up',
   ExpenseForm = 'Expense Form',
   AuthScreen = 'Auth Screen',
+}
+export interface IClassName {
+  className: string;
 }
 export type ITimeMode = 'date' | 'time' | 'datetime' | 'countdown';
 export type IAuth = {
@@ -21,6 +25,15 @@ export type ISlug = {
 };
 export interface ITitle {
   title: string;
+}
+export type ErrorState = {
+  isError: boolean;
+  errorMessage: string;
+};
+export interface IUserData {
+  userName: string;
+  email: string;
+  password: string;
 }
 export interface IExpense {
   id: string;

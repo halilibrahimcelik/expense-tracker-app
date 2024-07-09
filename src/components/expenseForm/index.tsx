@@ -15,7 +15,7 @@ import {
   validateTitle,
 } from '@/utils';
 import CustomErrorMessage from '../UI/CustomErrorMessage';
-import { IExpense, ITimeMode } from '@/types';
+import { ErrorState, IExpense, ITimeMode } from '@/types';
 import DateTimePicker, {
   DateTimePickerEvent,
 } from '@react-native-community/datetimepicker';
@@ -35,10 +35,7 @@ type Props = {
   handleNavigation: () => void;
   expenseId: string;
 };
-type ErrorState = {
-  isError: boolean;
-  errorMessage: string;
-};
+
 const numberOfLines = 4;
 
 const ExpenseForm = ({ handleNavigation, expenseId = '222' }: Props) => {
