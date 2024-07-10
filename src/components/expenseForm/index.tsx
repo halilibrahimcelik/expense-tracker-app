@@ -32,6 +32,7 @@ import {
 } from '@/utils/httpRequest';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { onAuthStateChanged } from 'firebase/auth';
+import { useAuthContext } from '@/providers/AuthProvider';
 
 type Props = {
   handleNavigation: () => void;
@@ -42,10 +43,10 @@ const numberOfLines = 4;
 
 const ExpenseForm = ({ handleNavigation, expenseId = '222' }: Props) => {
   const theme = useTheme();
-  const [userUid, setUserUid] = useState<string>('');
   const themeCtx = useThemeContext();
 
   const { addNewExpense, allExpenses, updateAnExpense } = useMainExpenseCtx();
+  const { userId } = useAuthContext();
   const [title, setTitle] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [description, setDescription] = useState('');
@@ -76,36 +77,6 @@ const ExpenseForm = ({ handleNavigation, expenseId = '222' }: Props) => {
       errorMessage: '',
     },
   });
-
-  useEffect(() => {
-    const getUserId = async () => {
-      try {
-        const userId = await AsyncStorage.getItem('userId');
-
-        if (!userId) {
-          onAuthStateChanged(auth, (user) => {
-            if (user) {
-              console.log(user, 'user on auth state');
-              // User is signed in, see docs for a list of available properties
-              // https://firebase.google.com/docs/reference/js/auth.user
-              const uid = user.uid;
-              setUserUid(uid);
-              // ...
-            } else {
-              // User is signed out
-              // ...
-            }
-          });
-        } else {
-          setUserUid(userId);
-          console.log(userId, 'asyncStorage userId');
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getUserId();
-  }, []);
 
   useEffect(() => {
     if (isSubmitted) {
@@ -186,7 +157,7 @@ const ExpenseForm = ({ handleNavigation, expenseId = '222' }: Props) => {
         expenseDate: date,
       };
       addNewExpense(newExpense);
-      date && saveExpenseToDb(newExpense, userUid);
+      date && saveExpenseToDb(newExpense, userId!);
     }
     resetForm();
   };

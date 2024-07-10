@@ -39,7 +39,7 @@ export const saveUserToDb = async (userId: string, userInfo: {}) => {
 };
 export const saveExpenseToDb = async (expense: IExpense, userId: string) => {
   try {
-    set(ref(database, `${EXPENSES_DB}/` + userId), {
+    set(ref(database, `${EXPENSES_DB}/ ${userId}/` + expense.id), {
       ...expense,
       expenseDate: expense.expenseDate.toISOString(),
     });

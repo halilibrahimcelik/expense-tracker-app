@@ -1,5 +1,8 @@
+import { auth } from '@/firebase/firebase.config';
 import { IAuth } from '@/types';
-import { createContext, useContext, useMemo, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { onAuthStateChanged } from 'firebase/auth';
+import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
 interface IAuthContext extends IAuth {
   setUserCredentials: React.Dispatch<React.SetStateAction<IAuth>>;
@@ -34,6 +37,43 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
     user: null,
     userId: null,
   });
+
+  useEffect(() => {
+    const getUserId = async () => {
+      try {
+        const userId = await AsyncStorage.getItem('userId');
+
+        if (!userId) {
+          onAuthStateChanged(auth, (user) => {
+            if (user) {
+              // User is signed in, see docs for a list of available properties
+              // https://firebase.google.com/docs/reference/js/auth.user
+              const uid = user.uid;
+              setUserCredentials((prev) => {
+                return {
+                  ...prev,
+                  isAuth: true,
+                  token: user.refreshToken,
+                  userId: uid,
+                };
+              });
+              // ...
+            } else {
+              // User is signed out
+              // ...
+            }
+          });
+        } else {
+          setUserCredentials((prev) => {
+            return { ...prev, isAuth: true, token: userId, userId: userId };
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getUserId();
+  }, []);
   const value = useMemo(() => {
     return {
       isAuth: userCredentials.isAuth,
