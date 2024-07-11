@@ -69,7 +69,7 @@ const TabNavigator = (props: Props) => {
                     onPress={() =>
                       navigation.navigate(STACK_NAMES.AuthScreen, {
                         screen: STACK_NAMES.AuthScreen,
-                        params: { slug: nanoid() },
+                        slug: nanoid(),
                       })
                     }
                     icon={() => (

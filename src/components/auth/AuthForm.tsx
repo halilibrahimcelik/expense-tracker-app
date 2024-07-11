@@ -197,10 +197,14 @@ const AuthForm = (props: Props) => {
             <CustomErrorMessage error={errorState.userName.errorMessage} />
           )}
         </View>
-        <View>
+        <View className=' p-0  m-0'>
           <TextInput
             returnKeyLabel='done'
-            label={<Text>Email</Text>}
+            label={
+              <>
+                <Text className='p-0 h-0 '>Email</Text>
+              </>
+            }
             autoComplete='email'
             inputMode='email'
             placeholderTextColor={theme.colors.primaryContainer}
@@ -211,6 +215,9 @@ const AuthForm = (props: Props) => {
               borderRadius: 10,
               margin: 0,
               padding: 0,
+              borderColor: 'white',
+              position: 'relative',
+              borderWidth: 1,
             }}
             value={userData.email}
             onChangeText={(text) =>

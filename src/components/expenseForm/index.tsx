@@ -23,15 +23,8 @@ import { AntDesign } from '@expo/vector-icons';
 import { useThemeContext } from '@/theme/ThemeProvider';
 import { nanoid } from 'nanoid';
 import { useMainExpenseCtx } from '@/providers/MainExpenseProvider';
-import { ref, set } from 'firebase/database';
-import database, { auth } from '@/firebase/firebase.config';
-import {
-  getExpensesFromDb,
-  saveExpenseToDb,
-  updateExpenseInDb,
-} from '@/utils/httpRequest';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { onAuthStateChanged } from 'firebase/auth';
+import { saveExpenseToDb, updateExpenseInDb } from '@/utils/httpRequest';
+
 import { useAuthContext } from '@/providers/AuthProvider';
 
 type Props = {
@@ -147,7 +140,7 @@ const ExpenseForm = ({ handleNavigation, expenseId = '222' }: Props) => {
         expenseDate: date,
       };
       updateAnExpense(expenseId, updatedExpense);
-      updateExpenseInDb(expenseId, updatedExpense);
+      updateExpenseInDb(userId!, updatedExpense);
     } else {
       const newExpense: IExpense = {
         id: nanoid(),
@@ -282,13 +275,13 @@ const ExpenseForm = ({ handleNavigation, expenseId = '222' }: Props) => {
               )}
             </View>
           )}
-          {show && (
+          {show && date && (
             <DateTimePicker
               accentColor={theme.colors.primary}
               textColor={theme.colors.primary}
               themeVariant={themeCtx?.isDarkMode ? 'dark' : 'light'}
               testID='dateTimePicker'
-              value={date || new Date()}
+              value={new Date(date) || new Date()}
               mode={mode}
               onChange={onChange}
             />

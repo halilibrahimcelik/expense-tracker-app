@@ -11,15 +11,16 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Container from '@/components/UI/Container';
 import ExpenseForm from '@/components/expenseForm';
 import { useAuthContext } from '@/providers/AuthProvider';
+import { useRoute } from '@react-navigation/native';
 
 interface Props extends ManageExpensesProps {}
 const ManagaExpenses = ({ navigation, route }: Props) => {
   const { isAuth, token } = useAuthContext();
+  console.log(route.params.slug, 'route');
 
   const handleNavigation = () => {
     navigation.goBack();
   };
-
   useEffect(() => {
     if (!isAuth || !token) {
       navigation.navigate(STACK_NAMES.Home, {
@@ -42,7 +43,7 @@ const ManagaExpenses = ({ navigation, route }: Props) => {
               >
                 <Container>
                   <ExpenseForm
-                    expenseId={route?.params?.params?.slug}
+                    expenseId={route?.params?.slug}
                     handleNavigation={handleNavigation}
                   />
                 </Container>

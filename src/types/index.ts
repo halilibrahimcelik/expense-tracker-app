@@ -24,6 +24,10 @@ export type IAuth = {
 export type ISlug = {
   slug: string;
 };
+export type IScreenType = {
+  slug: string;
+  screen: string;
+};
 export interface ITitle {
   title: string;
 }
@@ -51,15 +55,16 @@ export type RootStackParamList = {
   [STACK_NAMES.Home]: ITitle;
   [STACK_NAMES.SignIn]: undefined;
   [STACK_NAMES.SignUp]: undefined;
-  [STACK_NAMES.ExpenseForm]: {
-    screen: string;
-    params: ISlug;
-  };
+  [STACK_NAMES.ExpenseForm]: IScreenType;
   [STACK_NAMES.AuthScreen]: {
     screen: string;
-    params: ISlug;
+    params: {
+      slug: string;
+    };
   };
 };
 export type StackNavigation = NavigationProp<RootStackParamList>;
 export interface ManageExpensesProps
   extends NativeStackScreenProps<RootStackParamList, STACK_NAMES.ExpenseForm> {}
+export interface ProtectedScreenProps
+  extends NativeStackScreenProps<RootStackParamList, STACK_NAMES.AuthScreen> {}

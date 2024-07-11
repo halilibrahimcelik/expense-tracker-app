@@ -2,24 +2,26 @@ import { EXPENSES_DB, USERS_DB } from '@/constants';
 import database from '@/firebase/firebase.config';
 import { IExpense } from '@/types';
 import { child, get, ref, remove, set, update } from 'firebase/database';
-export const getExpensesFromDb = async () => {
+export const getExpensesFromDb = async (userId: string) => {
   try {
     const dbRef = ref(database);
-    const value = await get(child(dbRef, `${EXPENSES_DB}`)).then((snapshot) => {
-      if (snapshot.exists()) {
-        const data = snapshot.val();
-        // Check if data is already an array
-        if (Array.isArray(data)) {
-          return data;
+    const value = await get(child(dbRef, `${EXPENSES_DB}/${userId}/`)).then(
+      (snapshot) => {
+        if (snapshot.exists()) {
+          const data = snapshot.val();
+          // Check if data is already an array
+          if (Array.isArray(data)) {
+            return data;
+          } else {
+            // Convert object to array if data is not an array
+            return Object.keys(data).map((key) => data[key]);
+          }
         } else {
-          // Convert object to array if data is not an array
-          return Object.keys(data).map((key) => data[key]);
+          console.log('No data available');
+          return []; // Return an empty array if no data
         }
-      } else {
-        console.log('No data available');
-        return []; // Return an empty array if no data
       }
-    });
+    );
 
     return value;
   } catch (error) {
@@ -47,9 +49,12 @@ export const saveExpenseToDb = async (expense: IExpense, userId: string) => {
     console.log(error);
   }
 };
-export const updateExpenseInDb = async (id: string, expense: IExpense) => {
+export const updateExpenseInDb = async (userId: string, expense: IExpense) => {
   try {
-    return update(ref(database, `${EXPENSES_DB}/` + id), expense);
+    return update(
+      ref(database, `${EXPENSES_DB}/ ${userId}/` + expense.id),
+      expense
+    );
   } catch (error) {
     console.log(error);
   }

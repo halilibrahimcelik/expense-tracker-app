@@ -9,7 +9,6 @@ import { formatDate } from '@/utils';
 import { Currency, useMainExpenseCtx } from '@/providers/MainExpenseProvider';
 import { IExpense, ITimeMode, STACK_NAMES, StackNavigation } from '@/types';
 import { useThemeContext } from '@/theme/ThemeProvider';
-import { Entypo } from '@expo/vector-icons';
 import DropDownMenu from '../UI/DropdownMenu';
 import DeleteModal from '../UI/DeleteModal';
 import { useNavigation } from '@react-navigation/native';
@@ -43,8 +42,11 @@ const SingleExpense = ({
     deleteExpenseFromDb(id);
   };
   const handleEditExpense = () => {
-    navigation.navigate(STACK_NAMES.ManageExpenses, {
-      slug: id,
+    navigation.navigate(STACK_NAMES.AuthScreen, {
+      screen: STACK_NAMES.ExpenseForm,
+      params: {
+        slug: id,
+      },
     });
   };
   const handleOpenExpenseModal = () => {
