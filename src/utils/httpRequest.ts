@@ -5,7 +5,7 @@ import { child, get, ref, remove, set, update } from 'firebase/database';
 export const getExpensesFromDb = async (userId: string) => {
   try {
     const dbRef = ref(database);
-    const value = await get(child(dbRef, `${EXPENSES_DB}/${userId}/`)).then(
+    const value = await get(child(dbRef, `${EXPENSES_DB}/ ${userId}`)).then(
       (snapshot) => {
         if (snapshot.exists()) {
           const data = snapshot.val();
@@ -52,7 +52,7 @@ export const saveExpenseToDb = async (expense: IExpense, userId: string) => {
 export const updateExpenseInDb = async (userId: string, expense: IExpense) => {
   try {
     return update(
-      ref(database, `${EXPENSES_DB}/ ${userId}/` + expense.id),
+      ref(database, `/${EXPENSES_DB}/ ${userId}/` + expense.id),
       expense
     );
   } catch (error) {
@@ -60,9 +60,9 @@ export const updateExpenseInDb = async (userId: string, expense: IExpense) => {
   }
 };
 
-export const deleteExpenseFromDb = async (id: string) => {
+export const deleteExpenseFromDb = async (userId: string, id: string) => {
   try {
-    return remove(ref(database, `${EXPENSES_DB}/` + id));
+    return remove(ref(database, `/${EXPENSES_DB}/ ${userId}` + id));
   } catch (error) {
     console.log(error);
   }

@@ -16,7 +16,6 @@ import { useRoute } from '@react-navigation/native';
 interface Props extends ManageExpensesProps {}
 const ManagaExpenses = ({ navigation, route }: Props) => {
   const { isAuth, token } = useAuthContext();
-  console.log(route.params.slug, 'route');
 
   const handleNavigation = () => {
     navigation.goBack();

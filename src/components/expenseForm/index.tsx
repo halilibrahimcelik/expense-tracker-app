@@ -139,6 +139,7 @@ const ExpenseForm = ({ handleNavigation, expenseId = '222' }: Props) => {
         cost: parseInt(cost),
         expenseDate: date,
       };
+      console.log('update form');
       updateAnExpense(expenseId, updatedExpense);
       updateExpenseInDb(userId!, updatedExpense);
     } else {
@@ -275,13 +276,13 @@ const ExpenseForm = ({ handleNavigation, expenseId = '222' }: Props) => {
               )}
             </View>
           )}
-          {show && date && (
+          {show && (
             <DateTimePicker
               accentColor={theme.colors.primary}
               textColor={theme.colors.primary}
               themeVariant={themeCtx?.isDarkMode ? 'dark' : 'light'}
               testID='dateTimePicker'
-              value={new Date(date) || new Date()}
+              value={(date && new Date(date)) || new Date()}
               mode={mode}
               onChange={onChange}
             />
