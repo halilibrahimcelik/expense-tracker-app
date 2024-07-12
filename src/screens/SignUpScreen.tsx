@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import React from 'react';
 import Container from '@/components/UI/Container';
 import { useNavigation } from '@react-navigation/native';
@@ -16,15 +16,17 @@ const SignUpScreen = (props: Props) => {
 
   return (
     <Container customClass={'mt-10  '}>
-      <SignUpWrapper />
-      <AuthDivider isSignUp={true} />
-      <Button
-        mode='contained'
-        onPress={() => navigation.replace(STACK_NAMES.SignIn)}
-        style={{}}
-      >
-        Sign In
-      </Button>
+      <ScrollView>
+        <SignUpWrapper />
+        <AuthDivider isSignUp={true} />
+        <Button
+          mode='contained'
+          onPress={() => navigation.replace(STACK_NAMES.SignIn)}
+          style={{}}
+        >
+          Sign In
+        </Button>
+      </ScrollView>
     </Container>
   );
 };

@@ -9,12 +9,13 @@ import { saveUserToDb } from '@/utils/httpRequest';
 import { useAuthContext } from '@/providers/AuthProvider';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { nanoid } from 'nanoid';
 
 type Props = {
   isSignUp: boolean;
 };
 
-const AuthForm = (props: Props) => {
+const AuthForm = ({ isSignUp }: Props) => {
   const theme = useTheme();
   const { setUserCredentials } = useAuthContext();
   const navigation = useNavigation<StackNavigation>();
@@ -158,7 +159,7 @@ const AuthForm = (props: Props) => {
         await AsyncStorage.setItem('userId', res.user.uid);
         await AsyncStorage.setItem('isLoggedIn', 'true');
         navigation.navigate(STACK_NAMES.ExpenseForm, {
-          params: { slug: 'add' },
+          slug: nanoid(),
           screen: STACK_NAMES.ExpenseForm,
         });
         setIsLoading(false);
@@ -215,9 +216,7 @@ const AuthForm = (props: Props) => {
               borderRadius: 10,
               margin: 0,
               padding: 0,
-              borderColor: 'white',
               position: 'relative',
-              borderWidth: 1,
             }}
             value={userData.email}
             onChangeText={(text) =>
@@ -288,7 +287,7 @@ const AuthForm = (props: Props) => {
             className='mt-2'
             mode='elevated'
           >
-            {props.isSignUp
+            {isSignUp
               ? isLoading
                 ? ''
                 : 'Register'
