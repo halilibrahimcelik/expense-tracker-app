@@ -2,25 +2,31 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
-  Pressable,
   ScrollView,
-  StyleSheet,
   TouchableWithoutFeedback,
-  View,
 } from 'react-native';
-import React, { useState } from 'react';
-import { ManageExpensesProps } from '@/types';
+import React, { useEffect } from 'react';
+import { ManageExpensesProps, STACK_NAMES } from '@/types';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Container from '@/components/UI/Container';
-import { Button, Text, TextInput, useTheme } from 'react-native-paper';
 import ExpenseForm from '@/components/expenseForm';
+import { useAuthContext } from '@/providers/AuthProvider';
+import { useRoute } from '@react-navigation/native';
 
 interface Props extends ManageExpensesProps {}
 const ManagaExpenses = ({ navigation, route }: Props) => {
+  const { isAuth, token } = useAuthContext();
+
   const handleNavigation = () => {
     navigation.goBack();
   };
-
+  useEffect(() => {
+    if (!isAuth || !token) {
+      navigation.navigate(STACK_NAMES.Home, {
+        title: 'All Expenses',
+      });
+    }
+  }, [isAuth, navigation, token]);
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <SafeAreaView>
@@ -36,7 +42,7 @@ const ManagaExpenses = ({ navigation, route }: Props) => {
               >
                 <Container>
                   <ExpenseForm
-                    expenseId={route.params.slug}
+                    expenseId={route?.params?.slug}
                     handleNavigation={handleNavigation}
                   />
                 </Container>

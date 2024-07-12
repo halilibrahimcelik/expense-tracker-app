@@ -9,11 +9,11 @@ import { formatDate } from '@/utils';
 import { Currency, useMainExpenseCtx } from '@/providers/MainExpenseProvider';
 import { IExpense, ITimeMode, STACK_NAMES, StackNavigation } from '@/types';
 import { useThemeContext } from '@/theme/ThemeProvider';
-import { Entypo } from '@expo/vector-icons';
 import DropDownMenu from '../UI/DropdownMenu';
 import DeleteModal from '../UI/DeleteModal';
 import { useNavigation } from '@react-navigation/native';
 import { deleteExpenseFromDb } from '@/utils/httpRequest';
+import { useAuthContext } from '@/providers/AuthProvider';
 const SingleExpense = ({
   cost,
   id,
@@ -23,6 +23,7 @@ const SingleExpense = ({
 }: IExpense) => {
   const themeCtx = useThemeContext();
   const navigation = useNavigation<StackNavigation>();
+  const { userId } = useAuthContext();
   const [visibleDropdown, setVisibleDropdown] = useState(false);
   const [visibleModal, setVisibleModal] = useState(false);
   const { currency, deleteAnExpense } = useMainExpenseCtx();
@@ -40,11 +41,14 @@ const SingleExpense = ({
   const handleCloseModal = () => setVisibleModal(false);
   const handleDeleteExpense = () => {
     deleteAnExpense(id);
-    deleteExpenseFromDb(id);
+    userId && deleteExpenseFromDb(userId, id);
   };
   const handleEditExpense = () => {
-    navigation.navigate(STACK_NAMES.ManageExpenses, {
-      slug: id,
+    navigation.navigate(STACK_NAMES.AuthScreen, {
+      screen: STACK_NAMES.ExpenseForm,
+      params: {
+        slug: id,
+      },
     });
   };
   const handleOpenExpenseModal = () => {

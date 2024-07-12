@@ -8,6 +8,7 @@ import {
   useMemo,
   useState,
 } from 'react';
+import { useAuthContext } from './AuthProvider';
 export type Currency = {
   dollar: boolean;
   euro: boolean;
@@ -41,17 +42,19 @@ const MainExpenseProvider = ({ children }: { children: React.ReactNode }) => {
     euro: false,
     lira: false,
   });
+  const { userId } = useAuthContext();
   const [allExpenses, setAllExpenseses] = useState<IExpense[]>([]);
-
   useEffect(() => {
-    const getExpenses = async () => {
-      const expenses = (await getExpensesFromDb()) as IExpense[];
+    const getExpenses = async (userId: string) => {
+      const expenses = (await getExpensesFromDb(userId!)) as IExpense[];
       if (expenses) {
         setAllExpenseses(expenses);
       }
     };
-    getExpenses();
-  }, []);
+    if (userId) {
+      getExpenses(userId);
+    }
+  }, [userId]);
 
   const lastSevenDaysExpense = useCallback(() => {
     const lastSevenDays = new Date();

@@ -15,7 +15,7 @@ import {
   validateTitle,
 } from '@/utils';
 import CustomErrorMessage from '../UI/CustomErrorMessage';
-import { IExpense, ITimeMode } from '@/types';
+import { ErrorState, IExpense, ITimeMode } from '@/types';
 import DateTimePicker, {
   DateTimePickerEvent,
 } from '@react-native-community/datetimepicker';
@@ -23,28 +23,23 @@ import { AntDesign } from '@expo/vector-icons';
 import { useThemeContext } from '@/theme/ThemeProvider';
 import { nanoid } from 'nanoid';
 import { useMainExpenseCtx } from '@/providers/MainExpenseProvider';
-import { ref, set } from 'firebase/database';
-import database from '@/firebase/firebase.config';
-import {
-  getExpensesFromDb,
-  saveExpenseToDb,
-  updateExpenseInDb,
-} from '@/utils/httpRequest';
+import { saveExpenseToDb, updateExpenseInDb } from '@/utils/httpRequest';
+
+import { useAuthContext } from '@/providers/AuthProvider';
 
 type Props = {
   handleNavigation: () => void;
   expenseId: string;
 };
-type ErrorState = {
-  isError: boolean;
-  errorMessage: string;
-};
+
 const numberOfLines = 4;
 
-const ExpenseForm = ({ handleNavigation, expenseId }: Props) => {
+const ExpenseForm = ({ handleNavigation, expenseId = '222' }: Props) => {
   const theme = useTheme();
   const themeCtx = useThemeContext();
+
   const { addNewExpense, allExpenses, updateAnExpense } = useMainExpenseCtx();
+  const { userId } = useAuthContext();
   const [title, setTitle] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [description, setDescription] = useState('');
@@ -75,6 +70,7 @@ const ExpenseForm = ({ handleNavigation, expenseId }: Props) => {
       errorMessage: '',
     },
   });
+
   useEffect(() => {
     if (isSubmitted) {
       const titleError = validateTitle(title);
@@ -108,7 +104,6 @@ const ExpenseForm = ({ handleNavigation, expenseId }: Props) => {
     setIsSubmitted(false);
     handleNavigation();
   };
-
   const onSubmit = async () => {
     const titleError = validateTitle(title);
 
@@ -144,8 +139,9 @@ const ExpenseForm = ({ handleNavigation, expenseId }: Props) => {
         cost: parseInt(cost),
         expenseDate: date,
       };
+      console.log('update form');
       updateAnExpense(expenseId, updatedExpense);
-      updateExpenseInDb(expenseId, updatedExpense);
+      updateExpenseInDb(userId!, updatedExpense);
     } else {
       const newExpense: IExpense = {
         id: nanoid(),
@@ -155,7 +151,7 @@ const ExpenseForm = ({ handleNavigation, expenseId }: Props) => {
         expenseDate: date,
       };
       addNewExpense(newExpense);
-      date && saveExpenseToDb(newExpense);
+      date && saveExpenseToDb(newExpense, userId!);
     }
     resetForm();
   };
@@ -286,7 +282,7 @@ const ExpenseForm = ({ handleNavigation, expenseId }: Props) => {
               textColor={theme.colors.primary}
               themeVariant={themeCtx?.isDarkMode ? 'dark' : 'light'}
               testID='dateTimePicker'
-              value={date || new Date()}
+              value={(date && new Date(date)) || new Date()}
               mode={mode}
               onChange={onChange}
             />

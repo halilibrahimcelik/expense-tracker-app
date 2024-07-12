@@ -67,7 +67,8 @@ const TabNavigator = (props: Props) => {
                   <IconButton
                     size={24}
                     onPress={() =>
-                      navigation.navigate(STACK_NAMES.ManageExpenses, {
+                      navigation.navigate(STACK_NAMES.AuthScreen, {
+                        screen: STACK_NAMES.AuthScreen,
                         slug: nanoid(),
                       })
                     }

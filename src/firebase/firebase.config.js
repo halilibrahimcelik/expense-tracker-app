@@ -1,4 +1,3 @@
-// Import the functions you need from the SDKs you need
 // eslint-disable-next-line import/no-unresolved
 import {
   API_KEY,
@@ -12,7 +11,9 @@ import {
 } from '@env';
 import { initializeApp } from 'firebase/app';
 import { getDatabase } from 'firebase/database';
-
+// eslint-disable-next-line import/named
+import { getReactNativePersistence, initializeAuth } from 'firebase/auth';
+import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 const firebaseConfig = {
   apiKey: API_KEY,
   authDomain: AUTH_DOMAIN,
@@ -26,5 +27,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const database = getDatabase();
-
+export const auth = initializeAuth(app, {
+  persistence: getReactNativePersistence(ReactNativeAsyncStorage),
+});
 export default database;
