@@ -10,10 +10,11 @@ import { Currency, useMainExpenseCtx } from '@/providers/MainExpenseProvider';
 import { IExpense, ITimeMode, STACK_NAMES, StackNavigation } from '@/types';
 import { useThemeContext } from '@/theme/ThemeProvider';
 import DropDownMenu from '../UI/DropdownMenu';
-import DeleteModal from '../UI/DeleteModal';
+import DeleteModal from '../UI/GenericModal';
 import { useNavigation } from '@react-navigation/native';
 import { deleteExpenseFromDb } from '@/utils/httpRequest';
 import { useAuthContext } from '@/providers/AuthProvider';
+import GenericModal from '../UI/GenericModal';
 const SingleExpense = ({
   cost,
   id,
@@ -148,9 +149,9 @@ const SingleExpense = ({
           </View>
         </View>
       </Card>
-      <DeleteModal
+      <GenericModal
         title='Delete an expense'
-        text='One you delete an expense, it cannot be undone.
+        text='Once you delete an expense, it cannot be undone.
 Are you sure you?'
         visible={visibleModal}
         handleClose={handleCloseModal}

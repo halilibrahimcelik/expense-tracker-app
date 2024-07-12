@@ -8,7 +8,7 @@ type Props = {
   text: string;
   title: string;
 };
-const DeleteModal = ({
+const GenericModal = ({
   visible,
   handleDelete,
   handleClose,
@@ -42,4 +42,4 @@ const DeleteModal = ({
   );
 };
 
-export default DeleteModal;
+export default GenericModal;
