@@ -1,6 +1,5 @@
 import { NavigationProp } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { ViewProps } from 'react-native';
 
 export enum STACK_NAMES {
   Home = 'Home',
@@ -10,6 +9,7 @@ export enum STACK_NAMES {
   SignUp = 'Sign Up',
   ExpenseForm = 'Expense Form',
   AuthScreen = 'Auth Screen',
+  Settings = 'Settings',
 }
 export interface IClassName {
   className: string;
@@ -40,6 +40,11 @@ export interface IUserData {
   email: string;
   password: string;
 }
+export interface IUserDb {
+  id: string;
+  userName: string;
+  email: string;
+}
 export interface IExpense {
   id: string;
   title: string;
@@ -50,6 +55,7 @@ export interface IExpense {
 export type RootBottomParamList = {
   [STACK_NAMES.LastExpenses]: ITitle;
   [STACK_NAMES.AllExpenses]: ITitle;
+  [STACK_NAMES.Settings]: ITitle;
 };
 export type RootStackParamList = {
   [STACK_NAMES.Home]: ITitle;
