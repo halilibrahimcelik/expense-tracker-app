@@ -10,6 +10,7 @@ import { signOut } from 'firebase/auth';
 import { auth } from '@/firebase/firebase.config';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { IS_LOGGED_IN, USER_ID } from '@/constants';
 
 type Props = {};
 
@@ -39,8 +40,8 @@ const SettingsScreenWrapper = (props: Props) => {
   }, [userId]);
   const handleLogout = async () => {
     try {
-      await AsyncStorage.removeItem('userId');
-      await AsyncStorage.setItem('isLoggedIn', 'false');
+      await AsyncStorage.removeItem(USER_ID);
+      await AsyncStorage.setItem(IS_LOGGED_IN, 'false');
       setUserCredentials({
         isAuth: false,
         userId: '',
