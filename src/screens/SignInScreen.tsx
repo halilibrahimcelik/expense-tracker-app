@@ -17,7 +17,7 @@ const SignInScreen = (props: Props) => {
 
   return (
     <KeyboardWrapper>
-      <Container customClass={'mt-10  flex-1 '}>
+      <Container customClass={'mt-10 flex-1 '}>
         <SingInWrapper />
         <AuthDivider isSignUp={false} />
 

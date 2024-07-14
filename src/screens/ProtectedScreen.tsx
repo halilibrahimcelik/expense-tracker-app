@@ -5,6 +5,7 @@ import SignInScreen from './SignInScreen';
 import SignUpScreen from './SignUpScreen';
 import ManagaExpenses from './ManagaExpenses';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import ResetPasswordScreen from './ResetPassword';
 
 const AuthStack = createNativeStackNavigator<RootStackParamList>();
 
@@ -15,7 +16,7 @@ const ProtectedScreen = (props: ProtectedScreenProps) => {
     <AuthStack.Navigator
       screenOptions={{
         headerShown: false,
-        presentation: 'transparentModal',
+        presentation: 'modal',
       }}
     >
       {isAuth ? (
@@ -32,6 +33,10 @@ const ProtectedScreen = (props: ProtectedScreenProps) => {
           <AuthStack.Screen
             name={STACK_NAMES.SignUp}
             component={SignUpScreen}
+          />
+          <AuthStack.Screen
+            name={STACK_NAMES.ResetPassword}
+            component={ResetPasswordScreen}
           />
         </>
       )}

@@ -1,6 +1,6 @@
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { Button, TextInput, useTheme } from 'react-native-paper';
+import { Button, Text, TextInput, useTheme } from 'react-native-paper';
 import CustomErrorMessage from '../UI/CustomErrorMessage';
 import { ErrorState, STACK_NAMES, StackNavigation } from '@/types';
 import { signInWithEmailAndPassword } from 'firebase/auth';
@@ -206,6 +206,25 @@ const SignInForm = (props: Props) => {
         mode='elevated'
       >
         {isLoading ? '' : 'Sign In'}
+      </Button>
+
+      <Button
+        labelStyle={{
+          padding: 0,
+          marginHorizontal: 4,
+        }}
+        onPress={() => {
+          navigation.navigate(STACK_NAMES.AuthScreen, {
+            screen: STACK_NAMES.ResetPassword,
+            params: { slug: 'reset' },
+          });
+        }}
+        className=' flex-row mt-2 '
+        mode='text'
+      >
+        <Text className=' border-2   ' variant='labelSmall'>
+          Forget your password?{' '}
+        </Text>
       </Button>
     </ScrollView>
   );

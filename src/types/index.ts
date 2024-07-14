@@ -10,6 +10,7 @@ export enum STACK_NAMES {
   ExpenseForm = 'Expense Form',
   AuthScreen = 'Auth Screen',
   Settings = 'Settings',
+  ResetPassword = 'Reset Password',
 }
 export interface IClassName {
   className: string;
@@ -63,6 +64,7 @@ export type RootStackParamList = {
   [STACK_NAMES.SignIn]: undefined;
   [STACK_NAMES.SignUp]: undefined;
   [STACK_NAMES.ExpenseForm]: IScreenType;
+  [STACK_NAMES.ResetPassword]: IScreenType;
   [STACK_NAMES.AuthScreen]: {
     screen: string;
     params: {
