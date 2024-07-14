@@ -47,12 +47,14 @@ const ResetForm = (props: Props) => {
     }
   }, [isSubmitted, email]);
   const handleReset = async () => {
-    console.log('reset');
     try {
       setIsLoading(true);
       setIsSubmitted(true);
       const res = await sendPasswordResetEmail(auth, email);
-      Alert.alert('Success', 'Reset email sent successfully');
+      Alert.alert(
+        'Success',
+        'Reset email sent successfully Please check your email'
+      );
       setIsSubmitted(false);
       navigation.navigate(STACK_NAMES.SignIn);
     } catch (error) {
