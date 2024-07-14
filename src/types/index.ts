@@ -20,6 +20,7 @@ export type IAuth = {
   token: string | null;
   user: string | null;
   userId: string | null;
+  email: string | null;
 };
 export type ISlug = {
   slug: string;

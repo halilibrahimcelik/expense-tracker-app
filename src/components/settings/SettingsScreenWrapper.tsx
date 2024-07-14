@@ -11,6 +11,7 @@ import { auth } from '@/firebase/firebase.config';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { IS_LOGGED_IN, USER_ID } from '@/constants';
+import KeyboardWrapper from '@/containers/KeyboardWrapper';
 
 type Props = {};
 
@@ -46,6 +47,7 @@ const SettingsScreenWrapper = (props: Props) => {
         isAuth: false,
         userId: '',
         token: '',
+        email: '',
         user: '',
       });
       const res = await signOut(auth);
@@ -60,38 +62,44 @@ const SettingsScreenWrapper = (props: Props) => {
     }
   };
   return (
-    <ScrollView>
-      <View className='mb-5'>
-        <Text variant='titleLarge'>Welcome back,</Text>
-        <Text variant='bodyLarge'>{userInfo.userName}</Text>
-      </View>
-      <Text variant='bodyMedium'>
-        You can update your personal information here.
-      </Text>
-      <Divider className='h-[1px] my-2 mx-10' />
-      <Card className='' mode='outlined'>
-        <View className='p-2 '>
-          <Text className=' mb-2' variant='labelLarge'>
-            Change Password
-          </Text>
-          <ChangePassword />
+    <KeyboardWrapper>
+      <ScrollView>
+        <View className='mb-5'>
+          <Text variant='titleLarge'>Welcome back,</Text>
+          <Text variant='bodyLarge'>{userInfo.userName}</Text>
         </View>
-      </Card>
+        <Text variant='bodyMedium'>
+          You can update your personal information here.
+        </Text>
+        <Divider className='h-[1px] my-4 mx-10' />
+        <Card className='' mode='outlined'>
+          <View className='p-2 '>
+            <Text className=' mb-2' variant='labelLarge'>
+              Change Password
+            </Text>
+            <ChangePassword />
+          </View>
+        </Card>
 
-      <View className='mt-5'>
-        <Button onPress={() => setVisibleModal(true)} mode='elevated'>
-          <Text>Logout</Text>
-        </Button>
-      </View>
-      <GenericModal
-        title='Logout'
-        text='Once you logout, you will be redirected to the login page.
+        <View className='mt-5'>
+          <Button
+            className='px-4'
+            onPress={() => setVisibleModal(true)}
+            mode='elevated'
+          >
+            <Text>Logout</Text>
+          </Button>
+        </View>
+        <GenericModal
+          title='Logout'
+          text='Once you logout, you will be redirected to the login page.
 Are you sure you?'
-        visible={visibleModal}
-        handleClose={() => setVisibleModal(false)}
-        handleDelete={handleLogout}
-      />
-    </ScrollView>
+          visible={visibleModal}
+          handleClose={() => setVisibleModal(false)}
+          handleDelete={handleLogout}
+        />
+      </ScrollView>
+    </KeyboardWrapper>
   );
 };
 

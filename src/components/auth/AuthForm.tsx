@@ -154,11 +154,13 @@ const AuthForm = ({ isSignUp }: Props) => {
         setUserCredentials({
           isAuth: true,
           token: res.user.refreshToken,
+          email,
           user: userName,
           userId: res.user.uid,
         });
         await AsyncStorage.setItem(USER_ID, res.user.uid);
         await AsyncStorage.setItem(IS_LOGGED_IN, 'true');
+        await AsyncStorage.setItem('email', email);
         navigation.navigate(STACK_NAMES.ExpenseForm, {
           slug: nanoid(),
           screen: STACK_NAMES.ExpenseForm,

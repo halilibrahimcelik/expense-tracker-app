@@ -7,11 +7,13 @@ import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 interface IAuthContext extends IAuth {
   setUserCredentials: React.Dispatch<React.SetStateAction<IAuth>>;
 }
+
 const initalState: IAuthContext = {
   isAuth: false,
   token: null,
   user: null,
   userId: null,
+  email: null,
   setUserCredentials: () => {},
 };
 
@@ -36,13 +38,14 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
     token: null,
     user: null,
     userId: null,
+    email: null,
   });
 
   useEffect(() => {
     const getUserId = async () => {
       try {
         const userId = await AsyncStorage.getItem('userId');
-
+        const emailStored = await AsyncStorage.getItem('email');
         if (!userId) {
           onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -55,6 +58,7 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
                   isAuth: true,
                   token: user.refreshToken,
                   userId: uid,
+                  email: user.email,
                 };
               });
               // ...
@@ -65,13 +69,20 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
           });
         } else {
           setUserCredentials((prev) => {
-            return { ...prev, isAuth: true, token: userId, userId: userId };
+            return {
+              ...prev,
+              isAuth: true,
+              token: userId,
+              userId: userId,
+              email: emailStored,
+            };
           });
         }
       } catch (error) {
         console.log(error);
       }
     };
+
     getUserId();
   }, []);
   const value = useMemo(() => {
@@ -80,9 +91,11 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
       token: userCredentials.token,
       user: userCredentials.user,
       userId: userCredentials.userId,
+      email: userCredentials.email,
       setUserCredentials,
     };
   }, [
+    userCredentials.email,
     userCredentials.isAuth,
     userCredentials.token,
     userCredentials.user,

@@ -8,6 +8,8 @@ import { auth } from '@/firebase/firebase.config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { nanoid } from 'nanoid';
 import { useNavigation } from '@react-navigation/native';
+import { IS_LOGGED_IN, USER_ID } from '@/constants';
+import { useAuthContext } from '@/providers/AuthProvider';
 
 type Props = {};
 type UserData = {
@@ -20,6 +22,7 @@ type ErrorType = {
 };
 const SignInForm = (props: Props) => {
   const theme = useTheme();
+  const { setUserCredentials } = useAuthContext();
   const navigation = useNavigation<StackNavigation>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
@@ -123,11 +126,21 @@ const SignInForm = (props: Props) => {
       if (res.user.uid) {
         setIsLoading(false);
         setIsSubmitted(false);
-        await AsyncStorage.setItem('userId', res.user.uid);
-        await AsyncStorage.setItem('isLoggedIn', 'true');
-        navigation.navigate(STACK_NAMES.ExpenseForm, {
-          slug: nanoid(),
+        await AsyncStorage.setItem(USER_ID, res.user.uid);
+        await AsyncStorage.setItem(IS_LOGGED_IN, 'true');
+        await AsyncStorage.setItem('email', userData.email);
+        setUserCredentials({
+          isAuth: true,
+          user: res.user.uid,
+          token: res.user.refreshToken,
+          userId: res.user.uid,
+          email: userData.email,
+        });
+        navigation.navigate(STACK_NAMES.AuthScreen, {
           screen: STACK_NAMES.ExpenseForm,
+          params: {
+            slug: 'add',
+          },
         });
       }
     }
@@ -169,6 +182,7 @@ const SignInForm = (props: Props) => {
             borderRadius: 10,
             margin: 0,
             padding: 0,
+            marginTop: 12,
           }}
           placeholderTextColor={theme.colors.primaryContainer}
           theme={{ roundness: 8 }}
@@ -188,7 +202,7 @@ const SignInForm = (props: Props) => {
       <Button
         loading={isLoading}
         onPress={onSubmit}
-        className='mt-2'
+        className='mt-4'
         mode='elevated'
       >
         {isLoading ? '' : 'Sign In'}
