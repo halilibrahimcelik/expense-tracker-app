@@ -22,12 +22,15 @@ import { StatusBar } from 'expo-status-bar';
 import { nanoid } from 'nanoid';
 import { useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import SettingsScreen from '@/screens/SettingsScreen';
+import { useAuthContext } from '@/providers/AuthProvider';
 interface Props {}
 const Tab = createBottomTabNavigator<RootBottomParamList>();
 
 const TabNavigator = (props: Props) => {
   const themeContext = useThemeContext();
   const theme = useTheme();
+  const { isAuth } = useAuthContext();
   const navigation = useNavigation<StackNavigation>();
   useEffect(() => {
     const getTheme = async () => {
@@ -69,7 +72,9 @@ const TabNavigator = (props: Props) => {
                     onPress={() =>
                       navigation.navigate(STACK_NAMES.AuthScreen, {
                         screen: STACK_NAMES.AuthScreen,
-                        slug: nanoid(),
+                        params: {
+                          slug: nanoid(),
+                        },
                       })
                     }
                     icon={() => (
@@ -159,6 +164,19 @@ const TabNavigator = (props: Props) => {
             },
           }}
         />
+        {isAuth && (
+          <Tab.Screen
+            initialParams={{ title: 'Settings' }}
+            name={STACK_NAMES.Settings}
+            component={SettingsScreen}
+            options={{
+              tabBarLabel: 'Settings',
+              tabBarIcon: ({ color, size }) => {
+                return <Icon name='cog' size={size} color={color} />;
+              },
+            }}
+          />
+        )}
       </Tab.Navigator>
       {/* <ExpenseModal
         visible={isModalVisible}

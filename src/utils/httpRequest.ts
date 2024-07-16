@@ -1,6 +1,6 @@
 import { EXPENSES_DB, USERS_DB } from '@/constants';
 import database from '@/firebase/firebase.config';
-import { IExpense } from '@/types';
+import { IExpense, IUserDb } from '@/types';
 import { child, get, ref, remove, set, update } from 'firebase/database';
 export const getExpensesFromDb = async (userId: string) => {
   try {
@@ -29,6 +29,32 @@ export const getExpensesFromDb = async (userId: string) => {
     return []; // Return an empty array in case of error
   }
 };
+export const getUserFromDb = async (userId: string) => {
+  try {
+    const dbRef = ref(database);
+    const value = await get(child(dbRef, `${USERS_DB}/${userId}`)).then(
+      (snapshot) => {
+        if (snapshot.exists()) {
+          const data = snapshot.val();
+          // Check if data is already an array
+          return data as IUserDb;
+        } else {
+          console.log('No data available');
+          return {
+            email: '',
+            userName: '',
+            id: '',
+          }; // Return an empty array if no data
+        }
+      }
+    );
+
+    return value;
+  } catch (error) {
+    console.log(error);
+    return []; // Return an empty array in case of error
+  }
+};
 
 export const saveUserToDb = async (userId: string, userInfo: {}) => {
   try {
@@ -39,6 +65,7 @@ export const saveUserToDb = async (userId: string, userInfo: {}) => {
     console.log(error);
   }
 };
+
 export const saveExpenseToDb = async (expense: IExpense, userId: string) => {
   try {
     set(ref(database, `${EXPENSES_DB}/ ${userId}/` + expense.id), {

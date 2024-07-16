@@ -10,6 +10,7 @@ import { useAuthContext } from '@/providers/AuthProvider';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { nanoid } from 'nanoid';
+import { IS_LOGGED_IN, USER_ID } from '@/constants';
 
 type Props = {
   isSignUp: boolean;
@@ -153,11 +154,13 @@ const AuthForm = ({ isSignUp }: Props) => {
         setUserCredentials({
           isAuth: true,
           token: res.user.refreshToken,
+          email,
           user: userName,
           userId: res.user.uid,
         });
-        await AsyncStorage.setItem('userId', res.user.uid);
-        await AsyncStorage.setItem('isLoggedIn', 'true');
+        await AsyncStorage.setItem(USER_ID, res.user.uid);
+        await AsyncStorage.setItem(IS_LOGGED_IN, 'true');
+        await AsyncStorage.setItem('email', email);
         navigation.navigate(STACK_NAMES.ExpenseForm, {
           slug: nanoid(),
           screen: STACK_NAMES.ExpenseForm,
