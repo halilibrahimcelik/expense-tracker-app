@@ -20,6 +20,7 @@ This project includes the essential setup for a React Native project using TypeS
 
 - **React Native**: The framework for building native apps using React.
 - **TypeScript**: A typed superset of JavaScript that compiles to plain JavaScript.
+- **React Native Paper **:  the cross-platform UI kit library containing a collection of customizable and production-ready components.
 - **React Navigation**: An efficient  routing package.
 - **Firebase**:  A set of backend cloud computing services and application development platforms provided by Google.
 
@@ -34,6 +35,8 @@ For more details on React Native and TypeScript, refer to their official documen
 
 - [React Native Documentation](https://reactnative.dev/docs/getting-started)
 - [Firebase Documentation](https://firebase.google.com/docs/)
+- [React Native Paper Documentation](https://callstack.github.io/react-native-paper/)
+- [React Navigation](https://reactnavigation.org/docs/getting-started/)
 
 ## 🤝 Contributing
 
