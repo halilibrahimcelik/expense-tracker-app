@@ -11,7 +11,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Container from '@/components/UI/Container';
 import ExpenseForm from '@/components/expenseForm';
 import { useAuthContext } from '@/providers/AuthProvider';
-import { useRoute } from '@react-navigation/native';
 
 interface Props extends ManageExpensesProps {}
 const ManagaExpenses = ({ navigation, route }: Props) => {
